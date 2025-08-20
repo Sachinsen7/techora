@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import CourseCard from '../components/course/CourseCard';
-import Loader from '../components/common/Loader';
-import Button from '../components/common/Button';
-import { getCourses, getAllCategories } from '../services/api';
+import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import CourseCard from "../components/course/CourseCard";
+import Loader from "../components/common/Loader";
+import Button from "../components/common/Button";
+import { getCourses, getAllCategories } from "../services/api";
 
 function Home() {
   const [courses, setCourses] = useState([]);
@@ -16,27 +16,30 @@ function Home() {
   const heroSlides = [
     {
       id: 1,
-      title: 'Learn Without Limits',
-      subtitle: 'Start, switch, or advance your career with over 5,000 courses',
-      image: 'https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-      cta: 'Get Started',
-      link: '/courses',
+      title: "Learn Without Limits",
+      subtitle: "Start, switch, or advance your career with over 5,000 courses",
+      image:
+        "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+      cta: "Get Started",
+      link: "/courses",
     },
     {
       id: 2,
-      title: 'Skills for Your Future',
-      subtitle: 'Learn from industry experts to achieve your goals',
-      image: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-      cta: 'Explore Courses',
-      link: '/courses',
+      title: "Skills for Your Future",
+      subtitle: "Learn from industry experts to achieve your goals",
+      image:
+        "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+      cta: "Explore Courses",
+      link: "/courses",
     },
     {
       id: 3,
-      title: 'Learn from the Best',
-      subtitle: 'Join millions of learners worldwide',
-      image: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80',
-      cta: 'Start Learning',
-      link: '/courses',
+      title: "Learn from the Best",
+      subtitle: "Join millions of learners worldwide",
+      image:
+        "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80",
+      cta: "Start Learning",
+      link: "/courses",
     },
   ];
 
@@ -52,7 +55,7 @@ function Home() {
         setCourses(coursesData.courses);
         setCategories(categoriesData.categories || []);
       } catch (err) {
-        setError(err.message || 'Failed to load data.');
+        setError(err.message || "Failed to load data.");
       } finally {
         setLoading(false);
       }
@@ -69,17 +72,28 @@ function Home() {
 
   // Custom SVG Icon for Categories
   const CategoryIcon = () => (
-    <svg className="w-8 h-8 text-[#FFFFFF]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253" />
+    <svg
+      className="w-8 h-8 text-[#FFFFFF]"
+      fill="none"
+      stroke="currentColor"
+      viewBox="0 0 24 24"
+    >
+      <path
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth={2}
+        d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.746 0 3.332.477 4.5 1.253v13C20.832 18.477 19.246 18 17.5 18c-1.746 0-3.332.477-4.5 1.253"
+      />
     </svg>
   );
 
   if (loading) return <Loader />;
-  if (error) return (
-    <div className="text-[#6B7280] text-center p-8 text-lg bg-[#F9FAFB] rounded-lg shadow-md border border-[#E5E7EB]">
-      {error}
-    </div>
-  );
+  if (error)
+    return (
+      <div className="text-[#6B7280] text-center p-8 text-lg bg-[#F9FAFB] rounded-lg shadow-md border border-[#E5E7EB]">
+        {error}
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] font-sans">
@@ -96,7 +110,9 @@ function Home() {
           >
             <div
               className="w-full h-full bg-cover bg-center bg-no-repeat"
-              style={{ backgroundImage: `url(${heroSlides[currentSlide].image})` }}
+              style={{
+                backgroundImage: `url(${heroSlides[currentSlide].image})`,
+              }}
             >
               <div className="absolute inset-0 bg-gradient-to-r from-[#1B3C53] to-[#456882] bg-opacity-60"></div>
               <div className="relative z-10 flex items-center justify-center h-full text-center text-[#FFFFFF] px-4">
@@ -143,7 +159,7 @@ function Home() {
               key={index}
               onClick={() => setCurrentSlide(index)}
               className={`w-3 h-3 rounded-full transition-all duration-300 ${
-                index === currentSlide ? 'bg-[#FFFFFF]' : 'bg-[#FFFFFF]/50'
+                index === currentSlide ? "bg-[#FFFFFF]" : "bg-[#FFFFFF]/50"
               }`}
               aria-label={`Go to slide ${index + 1}`}
             />
@@ -152,21 +168,47 @@ function Home() {
 
         {/* Slider Navigation Arrows */}
         <button
-          onClick={() => setCurrentSlide((prev) => (prev - 1 + heroSlides.length) % heroSlides.length)}
+          onClick={() =>
+            setCurrentSlide(
+              (prev) => (prev - 1 + heroSlides.length) % heroSlides.length
+            )
+          }
           className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#FFFFFF]/20 hover:bg-[#FFFFFF]/30 text-[#FFFFFF] p-2 rounded-full transition-all duration-300"
           aria-label="Previous slide"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M15 19l-7-7 7-7"
+            />
           </svg>
         </button>
         <button
-          onClick={() => setCurrentSlide((prev) => (prev + 1) % heroSlides.length)}
+          onClick={() =>
+            setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+          }
           className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#FFFFFF]/20 hover:bg-[#FFFFFF]/30 text-[#FFFFFF] p-2 rounded-full transition-all duration-300"
           aria-label="Next slide"
         >
-          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+          <svg
+            className="w-6 h-6"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M9 5l7 7-7 7"
+            />
           </svg>
         </button>
       </section>
@@ -245,7 +287,9 @@ function Home() {
           </motion.div>
 
           {courses.length === 0 ? (
-            <p className="text-center text-[#6B7280] text-lg">No featured courses available at the moment.</p>
+            <p className="text-center text-[#6B7280] text-lg">
+              No featured courses available at the moment.
+            </p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
               {courses.map((course, index) => (
@@ -264,7 +308,7 @@ function Home() {
           )}
 
           <div className="text-center mt-12">
-            <Link to="/courses">
+            <Link to="/course">
               <Button
                 text="View All Courses"
                 className="bg-[#1B3C53] hover:bg-[#456882] text-[#FFFFFF] px-8 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
@@ -276,14 +320,14 @@ function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-r from-[#1B3C53] to-[#456882]">
+      <section className="py-16 bg-gradient-to-r from-[#1B3C53] to-[#456882] my-10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-[#FFFFFF]">
             {[
-              { value: '5000+', label: 'Courses' },
-              { value: '100K+', label: 'Students' },
-              { value: '500+', label: 'Instructors' },
-              { value: '50+', label: 'Countries' },
+              { value: "5000+", label: "Courses" },
+              { value: "100K+", label: "Students" },
+              { value: "500+", label: "Instructors" },
+              { value: "50+", label: "Countries" },
             ].map((stat, index) => (
               <motion.div
                 key={index}
@@ -292,7 +336,9 @@ function Home() {
                 transition={{ duration: 0.6, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="text-4xl md:text-5xl font-serif font-bold mb-2">{stat.value}</div>
+                <div className="text-4xl md:text-5xl font-serif font-bold mb-2">
+                  {stat.value}
+                </div>
                 <div className="text-lg text-[#FFFFFF]/80">{stat.label}</div>
               </motion.div>
             ))}

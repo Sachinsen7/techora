@@ -1,38 +1,38 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { Link } from 'react-router-dom';
-import Button from '../components/common/Button';
-import { PUBLIC_ROUTES } from '../routes';
+import React from "react";
+import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+import Button from "../components/common/Button";
+import { PUBLIC_ROUTES } from "../routes";
 
 function About() {
   const teamMembers = [
     {
-      name: 'Sachin Sen',
-      role: 'Founder & CEO',
-      bio: 'Passionate about making quality education accessible to everyone.',
+      name: "Sachin Sen",
+      role: "Founder & CEO",
+      bio: "Passionate about making quality education accessible to everyone.",
     },
     {
-      name: 'Kanchan Kahar',
-      role: 'Head of Education',
-      bio: 'Expert in curriculum design and creating engaging learning experiences.',
+      name: "Kanchan Kahar",
+      role: "Head of Education",
+      bio: "Expert in curriculum design and creating engaging learning experiences.",
     },
   ];
 
   const features = [
     {
-      title: 'Expert-Led Courses',
-      desc: 'Learn from industry professionals with real-world experience.',
-      icon: '�',
+      title: "Expert-Led Courses",
+      desc: "Learn from industry professionals with real-world experience.",
+      icon: "�",
     },
     {
-      title: 'Flexible Learning',
-      desc: 'Study at your own pace with lifetime access to course materials.',
-      icon: '⏰',
+      title: "Flexible Learning",
+      desc: "Study at your own pace with lifetime access to course materials.",
+      icon: "⏰",
     },
     {
-      title: 'Career Growth',
-      desc: 'Gain practical skills and certificates to advance your career.',
-      icon: '📈',
+      title: "Career Growth",
+      desc: "Gain practical skills and certificates to advance your career.",
+      icon: "📈",
     },
   ];
 
@@ -46,10 +46,13 @@ function About() {
         transition={{ duration: 0.5 }}
       >
         <div className="container mx-auto px-md text-center">
-          <h1 className="text-3xl md:text-4xl font-bold text-background-card mb-sm">About LearnSphere</h1>
+          <h1 className="text-3xl md:text-4xl font-bold text-background-card mb-sm">
+            About Techora
+          </h1>
           <p className="text-md text-background-card/80 max-w-2xl mx-auto mb-md">
-            We're on a mission to make quality education accessible to everyone. Learn from experts,
-            grow your skills, and achieve your goals with our comprehensive online courses.
+            We're on a mission to make quality education accessible to everyone.
+            Learn from experts, grow your skills, and achieve your goals with
+            our comprehensive online courses.
           </p>
           <Link to={PUBLIC_ROUTES.courseListing}>
             <Button
@@ -67,11 +70,14 @@ function About() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.2 }}
       >
-        <h2 className="text-2xl font-bold text-text-primary mb-md text-center">Our Mission</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-md text-center">
+          Our Mission
+        </h2>
         <p className="text-md text-text-secondary text-center leading-relaxed">
-          LearnSphere makes high-quality education accessible to all, connecting learners with expert
-          instructors to build skills and achieve success. We believe that everyone deserves the
-          opportunity to learn, grow, and transform their lives through education.
+          LearnSphere makes high-quality education accessible to all, connecting
+          learners with expert instructors to build skills and achieve success.
+          We believe that everyone deserves the opportunity to learn, grow, and
+          transform their lives through education.
         </p>
       </motion.section>
 
@@ -82,7 +88,9 @@ function About() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <h2 className="text-2xl font-bold text-text-primary mb-md text-center">Why Choose LearnSphere?</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-md text-center">
+          Why Choose LearnSphere?
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-md max-w-4xl mx-auto">
           {features.map((feature, index) => (
             <motion.div
@@ -94,7 +102,9 @@ function About() {
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
               <div className="text-3xl mb-sm">{feature.icon}</div>
-              <h3 className="text-lg font-semibold text-text-primary mb-sm">{feature.title}</h3>
+              <h3 className="text-lg font-semibold text-text-primary mb-sm">
+                {feature.title}
+              </h3>
               <p className="text-sm text-text-secondary">{feature.desc}</p>
             </motion.div>
           ))}
@@ -108,7 +118,9 @@ function About() {
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.4 }}
       >
-        <h2 className="text-2xl font-bold text-text-primary mb-md text-center">Meet Our Team</h2>
+        <h2 className="text-2xl font-bold text-text-primary mb-md text-center">
+          Meet Our Team
+        </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-md">
           {teamMembers.map((member, index) => (
             <motion.div
@@ -119,8 +131,12 @@ function About() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3, delay: index * 0.1 }}
             >
-              <h3 className="text-lg font-semibold text-text-primary mb-xs">{member.name}</h3>
-              <p className="text-sm text-primary-main font-medium mb-sm">{member.role}</p>
+              <h3 className="text-lg font-semibold text-text-primary mb-xs">
+                {member.name}
+              </h3>
+              <p className="text-sm text-primary-main font-medium mb-sm">
+                {member.role}
+              </p>
               <p className="text-sm text-text-secondary">{member.bio}</p>
             </motion.div>
           ))}
@@ -137,7 +153,8 @@ function About() {
         <div className="container mx-auto px-md text-center">
           <h2 className="text-2xl font-bold mb-sm">Ready to Start Learning?</h2>
           <p className="text-md mb-md max-w-xl mx-auto">
-            Join thousands of learners and start your journey today. Transform your skills and advance your career.
+            Join thousands of learners and start your journey today. Transform
+            your skills and advance your career.
           </p>
           <div className="flex justify-center space-x-md">
             <Link to={PUBLIC_ROUTES.courseListing}>

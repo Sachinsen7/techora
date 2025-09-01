@@ -8,7 +8,6 @@ const passport = require("passport");
 dotenv.config();
 
 require("./config/passport");
-
 const { connectDB } = require("./db/db");
 
 const authRouter = require("./routes/auth");
@@ -25,7 +24,7 @@ const app = express();
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "https://techora-tawny.vercel.app",
+    origin: process.env.FRONTEND_URL || "https://techora-smoky.vercel.app",
     credentials: true,
   })
 );
@@ -65,15 +64,13 @@ app.use((err, req, res, next) => {
   res.status(500).json({ message: "Something went wrong on the server!" });
 });
 
-const PORT = process.env.PORT || 3000;
-
 connectDB(process.env.MONGO_URI)
   .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Server listening on port ${PORT}`);
-    });
+    console.log("Database connected successfully");
   })
   .catch((error) => {
-    console.error("Failed to connect to database and start server:", error);
+    console.error("Failed to connect to database:", error);
     process.exit(1);
   });
+
+module.exports = app;

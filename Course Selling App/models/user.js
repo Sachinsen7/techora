@@ -12,14 +12,13 @@ const UserSchema = new Schema(
     },
     password: {
       type: String,
-      required: function() {
-        // Password is required only if no OAuth provider is used
+      required: function () {
         return !this.googleId;
       },
     },
     googleId: {
       type: String,
-      sparse: true, // Allows multiple null values but unique non-null values
+      sparse: true,
     },
     isEmailVerified: {
       type: Boolean,

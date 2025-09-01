@@ -12,7 +12,6 @@ function authMiddleware(req, res, next) {
   const token = authHeader.split(" ")[1];
 
   try {
-    // Use a single secret for all tokens, and store the role in the token payload
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     if (!decoded || !decoded.id || !decoded.role) {

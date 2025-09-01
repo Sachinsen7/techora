@@ -91,7 +91,6 @@ function Navbar() {
     { name: "Contact", path: PUBLIC_ROUTES.contact },
   ];
 
-  // Custom SVG Icons
   const LogoIcon = () => (
     <svg
       className="w-8 h-8 text-[#1B3C53]"
@@ -286,14 +285,14 @@ function Navbar() {
                 </motion.div>
               </>
             )}
-
+            {/* 
             <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
               <ThemeToggle
                 size="md"
                 className="ml-2"
                 aria-label="Toggle theme"
               />
-            </motion.div>
+            </motion.div> */}
 
             {isAuthenticated ? (
               <div className="relative" ref={dropdownRef}>

@@ -320,7 +320,7 @@ function Home() {
       </section>
 
       {/* Stats Section */}
-      <section className="py-16 bg-gradient-to-r from-[#1B3C53] to-[#456882] my-10">
+      {/* <section className="py-16 bg-gradient-to-r from-[#1B3C53] to-[#456882] my-10">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center text-[#FFFFFF]">
             {[
@@ -344,7 +344,7 @@ function Home() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* CTA Section */}
       <section className="py-16 bg-[#1B3C53]">

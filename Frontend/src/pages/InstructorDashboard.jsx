@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, selectAuthLoading } from '../Redux/slices/authSlice';
-import { showModal } from '../Redux/slices/uiSlice';
-import { getInstructorCourses, deleteInstructorCourse } from '../services/api';
-import Loader from '../components/common/Loader';
-import Button from '../components/common/Button';
-import Modal from '../components/common/Modal'; 
-import { PUBLIC_ROUTES } from '../routes';
+import React, { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, selectAuthLoading } from "../Redux/slices/authSlice";
+import { showModal } from "../Redux/slices/uiSlice";
+import { getInstructorCourses, deleteInstructorCourse } from "../services/api";
+import Loader from "../components/common/Loader";
+import Button from "../components/common/Button";
+import Modal from "../components/common/Modal";
+import { PUBLIC_ROUTES } from "../routes";
 
 function InstructorDashboard() {
   const dispatch = useDispatch();
@@ -22,14 +22,14 @@ function InstructorDashboard() {
   const [confirmModal, setConfirmModal] = useState({
     isOpen: false,
     courseIdToDelete: null,
-    courseTitleToDelete: '',
+    courseTitleToDelete: "",
   });
 
   useEffect(() => {
-    if (!authLoading && user && user.role === 'instructor') {
+    if (!authLoading && user && user.role === "instructor") {
       fetchInstructorCourses();
-    } else if (!authLoading && user && user.role !== 'instructor') {
-      navigate('/dashboard', { replace: true });
+    } else if (!authLoading && user && user.role !== "instructor") {
+      navigate("/dashboard", { replace: true });
     }
   }, [user, authLoading, navigate]);
 
@@ -40,12 +40,14 @@ function InstructorDashboard() {
       const data = await getInstructorCourses();
       setCourses(data.courses);
     } catch (err) {
-      setError(err.message || 'Failed to load your courses.');
-      dispatch(showModal({
-        title: 'Error',
-        message: err.message || 'Failed to load your courses.',
-        type: 'error',
-      }));
+      setError(err.message || "Failed to load your courses.");
+      dispatch(
+        showModal({
+          title: "Error",
+          message: err.message || "Failed to load your courses.",
+          type: "error",
+        })
+      );
     } finally {
       setLoading(false);
     }
@@ -64,26 +66,35 @@ function InstructorDashboard() {
     setLoading(true);
     try {
       await deleteInstructorCourse(confirmModal.courseIdToDelete);
-      dispatch(showModal({
-        title: 'Course Deleted',
-        message: `"${confirmModal.courseTitleToDelete}" has been successfully deleted.`,
-        type: 'success',
-      }));
+      dispatch(
+        showModal({
+          title: "Course Deleted",
+          message: `"${confirmModal.courseTitleToDelete}" has been successfully deleted.`,
+          type: "success",
+        })
+      );
       fetchInstructorCourses();
     } catch (err) {
-      dispatch(showModal({
-        title: 'Deletion Failed',
-        message: err.message || 'Failed to delete the course.',
-        type: 'error',
-      }));
+      dispatch(
+        showModal({
+          title: "Deletion Failed",
+          message: err.message || "Failed to delete the course.",
+          type: "error",
+        })
+      );
     } finally {
       setLoading(false);
     }
   };
 
   if (authLoading || loading) return <Loader />;
-  if (error) return <div className="text-[#DC2626] text-center p-8 text-xl font-medium">{error}</div>;
-  if (!user || user.role !== 'instructor') return null;
+  if (error)
+    return (
+      <div className="text-[#DC2626] text-center p-8 text-xl font-medium">
+        {error}
+      </div>
+    );
+  if (!user || user.role !== "instructor") return null;
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] py-8 px-4 font-sans">
@@ -93,12 +104,12 @@ function InstructorDashboard() {
             Instructor Dashboard
           </h1>
           <p className="text-lg text-[#6B7280] text-center mt-2 max-w-2xl mx-auto">
-            Manage your courses with ease and create engaging learning experiences.
+            Manage your courses with ease and create engaging learning
+            experiences.
           </p>
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-[#4A8292] rounded-full"></div>
         </header>
 
-        {/* Create Course Button */}
         <div className="mb-12 text-center">
           <Link to="/instructor/course/new">
             <Button
@@ -106,15 +117,24 @@ function InstructorDashboard() {
               className="inline-flex items-center px-6 py-3 bg-[#1B3C53] text-white hover:bg-[#456882] transition-all duration-200 ease-in-out transform hover:scale-105 rounded-md font-semibold text-base shadow-md"
               aria-label="Create a new course"
             >
-              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+              <svg
+                className="w-5 h-5 mr-2"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M12 4v16m8-8H4"
+                />
               </svg>
               Create New Course
             </Button>
           </Link>
         </div>
 
-      
         <section className="mb-8">
           <h2 className="text-2xl font-semibold text-[#1B3C53] mb-6 border-l-4 border-[#4A8292] pl-4">
             Your Courses
@@ -142,11 +162,15 @@ function InstructorDashboard() {
                 <div
                   key={course._id}
                   className="relative bg-[#FFFFFF] p-6 rounded-xl border border-[#E5E7EB] shadow-md hover:shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-1"
-                  style={{ animation: `fadeIn 0.5s ease-in-out ${index * 0.1}s both` }}
+                  style={{
+                    animation: `fadeIn 0.5s ease-in-out ${index * 0.1}s both`,
+                  }}
                 >
                   <div
                     className={`absolute top-0 left-0 w-2 h-full rounded-l-xl ${
-                      course.status === 'published' ? 'bg-[#4A8292]' : 'bg-[#D97706]'
+                      course.status === "published"
+                        ? "bg-[#4A8292]"
+                        : "bg-[#D97706]"
                     }`}
                     aria-hidden="true"
                   ></div>
@@ -155,17 +179,23 @@ function InstructorDashboard() {
                       {course.title}
                     </h3>
                     <p className="text-[#6B7280] text-sm mb-1">
-                      Status:{' '}
+                      Status:{" "}
                       <span
                         className={`font-medium ${
-                          course.status === 'published' ? 'text-[#4A8292]' : 'text-[#D97706]'
+                          course.status === "published"
+                            ? "text-[#4A8292]"
+                            : "text-[#D97706]"
                         }`}
                       >
-                        {course.status.charAt(0).toUpperCase() + course.status.slice(1)}
+                        {course.status.charAt(0).toUpperCase() +
+                          course.status.slice(1)}
                       </span>
                     </p>
                     <p className="text-[#6B7280] text-sm">
-                      Price: {course.price === 0 ? 'Free' : `$${course.price.toFixed(2)}`}
+                      Price:{" "}
+                      {course.price === 0
+                        ? "Free"
+                        : `$${course.price.toFixed(2)}`}
                     </p>
                     <div className="mt-4 flex flex-wrap gap-2">
                       <Link to={PUBLIC_ROUTES.courseDetail(course._id)}>
@@ -193,7 +223,9 @@ function InstructorDashboard() {
                       </Link>
                       <Button
                         text="Delete"
-                        onClick={() => openConfirmDeleteModal(course._id, course.title)}
+                        onClick={() =>
+                          openConfirmDeleteModal(course._id, course.title)
+                        }
                         className="px-4 py-2 bg-[#DC2626] text-white hover:bg-[#B91C1C] transition-colors duration-200 rounded-md text-sm font-medium"
                         aria-label={`Delete course ${course.title}`}
                       />

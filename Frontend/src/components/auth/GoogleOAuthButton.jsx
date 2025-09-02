@@ -1,16 +1,17 @@
-import React from 'react';
-import { FaGoogle } from 'react-icons/fa';
+import React from "react";
+import { FaGoogle } from "react-icons/fa";
 
-const GoogleOAuthButton = ({ 
-  text = "Continue with Google", 
+const GoogleOAuthButton = ({
+  text = "Continue with Google",
   className = "",
-  disabled = false 
+  disabled = false,
 }) => {
   const handleGoogleAuth = () => {
     if (disabled) return;
-    
-    // Redirect to backend Google OAuth endpoint
-    const backendUrl = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3000';
+
+    //google auth
+    const backendUrl =
+      import.meta.env.VITE_API_BASE_URL || "https://techora-1.onrender.com";
     window.location.href = `${backendUrl}/api/auth/google`;
   };
 

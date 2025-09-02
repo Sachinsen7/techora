@@ -70,7 +70,6 @@ function Home() {
     return () => clearInterval(timer);
   }, [heroSlides.length]);
 
-  // Custom SVG Icon for Categories
   const CategoryIcon = () => (
     <svg
       className="w-8 h-8 text-[#FFFFFF]"
@@ -97,7 +96,6 @@ function Home() {
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] font-sans">
-      {/* Hero Section with Slider */}
       <section className="relative h-[600px] overflow-hidden">
         <AnimatePresence mode="wait">
           <motion.div
@@ -152,7 +150,6 @@ function Home() {
           </motion.div>
         </AnimatePresence>
 
-        {/* Slider Navigation Dots */}
         <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex space-x-2">
           {heroSlides.map((_, index) => (
             <button
@@ -166,7 +163,6 @@ function Home() {
           ))}
         </div>
 
-        {/* Slider Navigation Arrows */}
         <button
           onClick={() =>
             setCurrentSlide(
@@ -213,7 +209,6 @@ function Home() {
         </button>
       </section>
 
-      {/* Categories Section */}
       <section className="py-16 bg-[#F9FAFB]">
         <div className="container mx-auto px-4">
           <motion.div
@@ -268,7 +263,6 @@ function Home() {
         </div>
       </section>
 
-      {/* Featured Courses Section */}
       <section className="py-16 bg-[#FFFFFF]">
         <div className="container mx-auto px-4">
           <motion.div
@@ -346,7 +340,6 @@ function Home() {
         </div>
       </section> */}
 
-      {/* CTA Section */}
       <section className="py-16 bg-[#1B3C53]">
         <div className="container mx-auto px-4 text-center">
           <motion.div

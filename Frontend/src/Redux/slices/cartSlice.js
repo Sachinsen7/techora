@@ -1,15 +1,13 @@
-import { createSlice, createSelector } from '@reduxjs/toolkit';
+import { createSlice, createSelector } from "@reduxjs/toolkit";
 
-// Initial state
 const initialState = {
   items: [],
   loading: false,
   error: null,
 };
 
-// Create the cart slice
 const cartSlice = createSlice({
-  name: 'cart',
+  name: "cart",
   initialState,
   reducers: {
     initializeCart: (state, action) => {
@@ -20,7 +18,7 @@ const cartSlice = createSlice({
           try {
             state.items = JSON.parse(savedCart);
           } catch (error) {
-            console.error('Error loading cart from localStorage:', error);
+            console.error("Error loading cart from localStorage:", error);
             state.items = [];
           }
         }
@@ -30,11 +28,10 @@ const cartSlice = createSlice({
     },
     addToCart: (state, action) => {
       const { course, userId } = action.payload;
-      
-      // Check if course is already in cart
-      const existingItem = state.items.find(item => item._id === course._id);
+
+      const existingItem = state.items.find((item) => item._id === course._id);
       if (existingItem) {
-        return; // Don't add duplicate items
+        return;
       }
 
       const cartItem = {
@@ -51,17 +48,15 @@ const cartSlice = createSlice({
       };
 
       state.items.push(cartItem);
-      
-      // Save to localStorage
+
       if (userId) {
         localStorage.setItem(`cart_${userId}`, JSON.stringify(state.items));
       }
     },
     removeFromCart: (state, action) => {
       const { courseId, userId } = action.payload;
-      state.items = state.items.filter(item => item._id !== courseId);
-      
-      // Save to localStorage
+      state.items = state.items.filter((item) => item._id !== courseId);
+
       if (userId) {
         localStorage.setItem(`cart_${userId}`, JSON.stringify(state.items));
       }
@@ -69,8 +64,7 @@ const cartSlice = createSlice({
     clearCart: (state, action) => {
       const { userId } = action.payload;
       state.items = [];
-      
-      // Clear from localStorage
+
       if (userId) {
         localStorage.removeItem(`cart_${userId}`);
       }
@@ -87,7 +81,6 @@ const cartSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   initializeCart,
   addToCart,
@@ -98,36 +91,30 @@ export const {
   clearCartError,
 } = cartSlice.actions;
 
-// Export selectors
 export const selectCart = (state) => state.cart;
 export const selectCartItems = (state) => state.cart.items;
 export const selectCartLoading = (state) => state.cart.loading;
 export const selectCartError = (state) => state.cart.error;
 
-// Computed selectors
 export const selectCartCount = (state) => state.cart.items.length;
-export const selectCartTotal = (state) => 
+export const selectCartTotal = (state) =>
   state.cart.items.reduce((total, item) => total + (item.price || 0), 0);
 
 export const selectIsInCart = (courseId) => (state) =>
-  state.cart.items.some(item => item._id === courseId);
+  state.cart.items.some((item) => item._id === courseId);
 
-export const selectCartSummary = createSelector(
-  [selectCartItems],
-  (items) => {
-    const subtotal = items.reduce((total, item) => total + (item.price || 0), 0);
-    const tax = subtotal * 0.1;
-    const total = subtotal + tax;
+export const selectCartSummary = createSelector([selectCartItems], (items) => {
+  const subtotal = items.reduce((total, item) => total + (item.price || 0), 0);
+  const tax = subtotal * 0.1;
+  const total = subtotal + tax;
 
-    return {
-      subtotal,
-      tax,
-      total,
-      itemCount: items.length,
-      items,
-    };
-  }
-);
+  return {
+    subtotal,
+    tax,
+    total,
+    itemCount: items.length,
+    items,
+  };
+});
 
-// Export reducer
 export default cartSlice.reducer;

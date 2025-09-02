@@ -1,6 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-// Define light and dark theme configurations
 const lightTheme = {
   colors: {
     primary: {
@@ -42,7 +41,7 @@ const lightTheme = {
 const darkTheme = {
   colors: {
     primary: {
-      main: "#3B82F6", // Bright Blue for dark mode
+      main: "#3B82F6",
       light: "#60A5FA",
       dark: "#1E40AF",
     },
@@ -77,75 +76,97 @@ const darkTheme = {
   },
 };
 
-// Initial state
 const initialState = {
-  mode: 'light', // 'light' or 'dark'
+  mode: "light",
   currentTheme: lightTheme,
   isLoading: false,
 };
 
-// Create the theme slice
 const themeSlice = createSlice({
-  name: 'theme',
+  name: "theme",
   initialState,
   reducers: {
     toggleTheme: (state) => {
-      state.mode = state.mode === 'light' ? 'dark' : 'light';
-      state.currentTheme = state.mode === 'light' ? lightTheme : darkTheme;
-      
-      // Apply theme to document root for CSS variables
+      state.mode = state.mode === "light" ? "dark" : "light";
+      state.currentTheme = state.mode === "light" ? lightTheme : darkTheme;
+
       const root = document.documentElement;
       const theme = state.currentTheme;
-      
-      // Set CSS custom properties
-      root.style.setProperty('--color-primary', theme.colors.primary.main);
-      root.style.setProperty('--color-primary-light', theme.colors.primary.light);
-      root.style.setProperty('--color-primary-dark', theme.colors.primary.dark);
-      root.style.setProperty('--color-secondary', theme.colors.secondary.main);
-      root.style.setProperty('--color-background', theme.colors.background.main);
-      root.style.setProperty('--color-background-card', theme.colors.background.card);
-      root.style.setProperty('--color-background-body', theme.colors.background.body);
-      root.style.setProperty('--color-text-primary', theme.colors.text.primary);
-      root.style.setProperty('--color-text-secondary', theme.colors.text.secondary);
-      root.style.setProperty('--color-success', theme.colors.accent.success);
-      root.style.setProperty('--color-error', theme.colors.accent.error);
-      root.style.setProperty('--color-warning', theme.colors.accent.warning);
-      
-      // Add/remove dark class to body
-      if (state.mode === 'dark') {
-        document.body.classList.add('dark');
+
+      root.style.setProperty("--color-primary", theme.colors.primary.main);
+      root.style.setProperty(
+        "--color-primary-light",
+        theme.colors.primary.light
+      );
+      root.style.setProperty("--color-primary-dark", theme.colors.primary.dark);
+      root.style.setProperty("--color-secondary", theme.colors.secondary.main);
+      root.style.setProperty(
+        "--color-background",
+        theme.colors.background.main
+      );
+      root.style.setProperty(
+        "--color-background-card",
+        theme.colors.background.card
+      );
+      root.style.setProperty(
+        "--color-background-body",
+        theme.colors.background.body
+      );
+      root.style.setProperty("--color-text-primary", theme.colors.text.primary);
+      root.style.setProperty(
+        "--color-text-secondary",
+        theme.colors.text.secondary
+      );
+      root.style.setProperty("--color-success", theme.colors.accent.success);
+      root.style.setProperty("--color-error", theme.colors.accent.error);
+      root.style.setProperty("--color-warning", theme.colors.accent.warning);
+
+      if (state.mode === "dark") {
+        document.body.classList.add("dark");
       } else {
-        document.body.classList.remove('dark');
+        document.body.classList.remove("dark");
       }
     },
     setTheme: (state, action) => {
       const { mode } = action.payload;
       state.mode = mode;
-      state.currentTheme = mode === 'light' ? lightTheme : darkTheme;
-      
-      // Apply theme to document root
+      state.currentTheme = mode === "light" ? lightTheme : darkTheme;
+
       const root = document.documentElement;
       const theme = state.currentTheme;
-      
-      // Set CSS custom properties
-      root.style.setProperty('--color-primary', theme.colors.primary.main);
-      root.style.setProperty('--color-primary-light', theme.colors.primary.light);
-      root.style.setProperty('--color-primary-dark', theme.colors.primary.dark);
-      root.style.setProperty('--color-secondary', theme.colors.secondary.main);
-      root.style.setProperty('--color-background', theme.colors.background.main);
-      root.style.setProperty('--color-background-card', theme.colors.background.card);
-      root.style.setProperty('--color-background-body', theme.colors.background.body);
-      root.style.setProperty('--color-text-primary', theme.colors.text.primary);
-      root.style.setProperty('--color-text-secondary', theme.colors.text.secondary);
-      root.style.setProperty('--color-success', theme.colors.accent.success);
-      root.style.setProperty('--color-error', theme.colors.accent.error);
-      root.style.setProperty('--color-warning', theme.colors.accent.warning);
-      
-      // Add/remove dark class to body
-      if (mode === 'dark') {
-        document.body.classList.add('dark');
+
+      root.style.setProperty("--color-primary", theme.colors.primary.main);
+      root.style.setProperty(
+        "--color-primary-light",
+        theme.colors.primary.light
+      );
+      root.style.setProperty("--color-primary-dark", theme.colors.primary.dark);
+      root.style.setProperty("--color-secondary", theme.colors.secondary.main);
+      root.style.setProperty(
+        "--color-background",
+        theme.colors.background.main
+      );
+      root.style.setProperty(
+        "--color-background-card",
+        theme.colors.background.card
+      );
+      root.style.setProperty(
+        "--color-background-body",
+        theme.colors.background.body
+      );
+      root.style.setProperty("--color-text-primary", theme.colors.text.primary);
+      root.style.setProperty(
+        "--color-text-secondary",
+        theme.colors.text.secondary
+      );
+      root.style.setProperty("--color-success", theme.colors.accent.success);
+      root.style.setProperty("--color-error", theme.colors.accent.error);
+      root.style.setProperty("--color-warning", theme.colors.accent.warning);
+
+      if (mode === "dark") {
+        document.body.classList.add("dark");
       } else {
-        document.body.classList.remove('dark');
+        document.body.classList.remove("dark");
       }
     },
     setThemeLoading: (state, action) => {
@@ -154,14 +175,11 @@ const themeSlice = createSlice({
   },
 });
 
-// Export actions
 export const { toggleTheme, setTheme, setThemeLoading } = themeSlice.actions;
 
-// Export selectors
 export const selectTheme = (state) => state.theme;
 export const selectThemeMode = (state) => state.theme.mode;
 export const selectCurrentTheme = (state) => state.theme.currentTheme;
 export const selectThemeLoading = (state) => state.theme.isLoading;
 
-// Export reducer
 export default themeSlice.reducer;

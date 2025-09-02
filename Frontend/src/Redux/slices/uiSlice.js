@@ -1,13 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
-// Initial state
 const initialState = {
   sidebarOpen: false,
   mobileMenuOpen: false,
-  searchQuery: '',
+  searchQuery: "",
   filters: {
-    category: '',
-    level: '',
+    category: "",
+    level: "",
     priceRange: [0, 1000],
     rating: 0,
   },
@@ -19,17 +18,16 @@ const initialState = {
   },
   modal: {
     isOpen: false,
-    title: '',
-    message: '',
-    type: 'info', // 'info', 'success', 'error', 'warning'
+    title: "",
+    message: "",
+    type: "info", // 'info', 'success', 'error', 'warning'
     onConfirm: null,
     onCancel: null,
   },
 };
 
-// Create the UI slice
 const uiSlice = createSlice({
-  name: 'ui',
+  name: "ui",
   initialState,
   reducers: {
     toggleSidebar: (state) => {
@@ -52,8 +50,8 @@ const uiSlice = createSlice({
     },
     resetFilters: (state) => {
       state.filters = {
-        category: '',
-        level: '',
+        category: "",
+        level: "",
         priceRange: [0, 1000],
         rating: 0,
       };
@@ -65,22 +63,23 @@ const uiSlice = createSlice({
         ...action.payload,
       };
       state.notifications.unshift(notification);
-      
-      // Keep only last 50 notifications
+
       if (state.notifications.length > 50) {
         state.notifications = state.notifications.slice(0, 50);
       }
     },
     removeNotification: (state, action) => {
       state.notifications = state.notifications.filter(
-        notification => notification.id !== action.payload
+        (notification) => notification.id !== action.payload
       );
     },
     clearNotifications: (state) => {
       state.notifications = [];
     },
     markNotificationAsRead: (state, action) => {
-      const notification = state.notifications.find(n => n.id === action.payload);
+      const notification = state.notifications.find(
+        (n) => n.id === action.payload
+      );
       if (notification) {
         notification.read = true;
       }
@@ -97,9 +96,9 @@ const uiSlice = createSlice({
     showModal: (state, action) => {
       state.modal = {
         isOpen: true,
-        title: '',
-        message: '',
-        type: 'info',
+        title: "",
+        message: "",
+        type: "info",
         onConfirm: null,
         onCancel: null,
         ...action.payload,
@@ -114,7 +113,6 @@ const uiSlice = createSlice({
   },
 });
 
-// Export actions
 export const {
   toggleSidebar,
   setSidebarOpen,
@@ -134,18 +132,16 @@ export const {
   updateModal,
 } = uiSlice.actions;
 
-// Export selectors
 export const selectUI = (state) => state.ui;
 export const selectSidebarOpen = (state) => state.ui.sidebarOpen;
 export const selectMobileMenuOpen = (state) => state.ui.mobileMenuOpen;
 export const selectSearchQuery = (state) => state.ui.searchQuery;
 export const selectFilters = (state) => state.ui.filters;
 export const selectNotifications = (state) => state.ui.notifications;
-export const selectUnreadNotifications = (state) => 
-  state.ui.notifications.filter(n => !n.read);
+export const selectUnreadNotifications = (state) =>
+  state.ui.notifications.filter((n) => !n.read);
 export const selectLoading = (state) => state.ui.loading;
 export const selectGlobalLoading = (state) => state.ui.loading.global;
 export const selectModal = (state) => state.ui.modal;
 
-// Export reducer
 export default uiSlice.reducer;

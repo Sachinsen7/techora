@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import Button from './common/Button';
+import React from "react";
+import PropTypes from "prop-types";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
+import Button from "./common/Button";
 
 function InstructorProfile({ instructor, showFullProfileLink = false }) {
   if (!instructor) {
@@ -19,11 +19,11 @@ function InstructorProfile({ instructor, showFullProfileLink = false }) {
       <div className="flex items-center mb-md">
         <motion.img
           src={
-            instructor.profilePicture?.startsWith('http')
+            instructor.profilePicture?.startsWith("http")
               ? instructor.profilePicture
               : instructor.profilePicture
-                ? `http://localhost:3000${instructor.profilePicture}`
-                : 'https://via.placeholder.com/80x80/F9F3EF/1B3C53?text=Instructor'
+              ? `https://techora-1.onrender.com${instructor.profilePicture}`
+              : "https://via.placeholder.com/80x80/F9F3EF/1B3C53?text=Instructor"
           }
           alt={`${instructor.firstName} ${instructor.lastName}`}
           className="w-16 h-16 rounded-full mr-md object-cover border-2 border-primary-main shadow-sm"
@@ -39,7 +39,7 @@ function InstructorProfile({ instructor, showFullProfileLink = false }) {
       {instructor.bio && (
         <motion.p
           className="text-text-primary text-md mb-md line-clamp-3 hover:line-clamp-none transition-all duration-300"
-          whileHover={{ cursor: 'pointer' }}
+          whileHover={{ cursor: "pointer" }}
           title="Click to expand"
         >
           {instructor.bio}
@@ -47,8 +47,14 @@ function InstructorProfile({ instructor, showFullProfileLink = false }) {
       )}
       {instructor.stats && (
         <div className="text-sm text-text-secondary mb-md grid grid-cols-2 gap-sm">
-          <p><span className="font-semibold text-text-primary">Courses:</span> {instructor.stats.courses || 0}</p>
-          <p><span className="font-semibold text-text-primary">Students:</span> {instructor.stats.students || 0}</p>
+          <p>
+            <span className="font-semibold text-text-primary">Courses:</span>{" "}
+            {instructor.stats.courses || 0}
+          </p>
+          <p>
+            <span className="font-semibold text-text-primary">Students:</span>{" "}
+            {instructor.stats.students || 0}
+          </p>
         </div>
       )}
       {showFullProfileLink && (
@@ -70,7 +76,7 @@ InstructorProfile.propTypes = {
   instructor: PropTypes.shape({
     _id: PropTypes.string.isRequired,
     firstName: PropTypes.string.isRequired,
-    lastName: PropTypes.string.isRequired, 
+    lastName: PropTypes.string.isRequired,
     email: PropTypes.string.isRequired,
     profilePicture: PropTypes.string,
     bio: PropTypes.string,

@@ -1,12 +1,9 @@
-import theme from './src/utils/theme';
-import defaultTheme from 'tailwindcss/defaultTheme';
+import theme from "./src/utils/theme";
+import defaultTheme from "tailwindcss/defaultTheme";
 
 export default {
-  content: [
-    './index.html',
-    './src/**/*.{js,ts,jsx,tsx}',
-  ],
-  darkMode: 'class', // Enable class-based dark mode
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  darkMode: "class", // Enable class-based dark mode
   theme: {
     extend: {
       colors: {
@@ -16,8 +13,8 @@ export default {
         text: theme.colors.text,
         accent: theme.colors.accent,
       },
-      fontFamily: { 
-        sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
+      fontFamily: {
+        sans: ["Montserrat", ...defaultTheme.fontFamily.sans],
       },
       spacing: {
         sm: theme.spacing.sm,

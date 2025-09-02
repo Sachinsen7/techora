@@ -22,23 +22,22 @@ function About() {
     {
       title: "Expert-Led Courses",
       desc: "Learn from industry professionals with real-world experience.",
-      icon: "�",
+      icon: "",
     },
     {
       title: "Flexible Learning",
       desc: "Study at your own pace with lifetime access to course materials.",
-      icon: "⏰",
+      icon: "",
     },
     {
       title: "Career Growth",
       desc: "Gain practical skills and certificates to advance your career.",
-      icon: "📈",
+      icon: "",
     },
   ];
 
   return (
     <div className="min-h-screen bg-background-main font-sans">
-      {/* Hero Section */}
       <motion.section
         className="bg-gradient-to-r from-primary-main to-primary-light text-background-card py-lg"
         initial={{ opacity: 0, y: -20 }}
@@ -63,7 +62,6 @@ function About() {
         </div>
       </motion.section>
 
-      {/* Mission */}
       <motion.section
         className="container mx-auto px-md py-lg max-w-3xl"
         initial={{ opacity: 0, y: 20 }}
@@ -74,14 +72,13 @@ function About() {
           Our Mission
         </h2>
         <p className="text-md text-text-secondary text-center leading-relaxed">
-          LearnSphere makes high-quality education accessible to all, connecting
+          Techora makes high-quality education accessible to all, connecting
           learners with expert instructors to build skills and achieve success.
           We believe that everyone deserves the opportunity to learn, grow, and
           transform their lives through education.
         </p>
       </motion.section>
 
-      {/* Features */}
       <motion.section
         className="container mx-auto px-md py-lg"
         initial={{ opacity: 0, y: 20 }}
@@ -89,7 +86,7 @@ function About() {
         transition={{ duration: 0.5, delay: 0.3 }}
       >
         <h2 className="text-2xl font-bold text-text-primary mb-md text-center">
-          Why Choose LearnSphere?
+          Why Choose Techora?
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-md max-w-4xl mx-auto">
           {features.map((feature, index) => (
@@ -111,7 +108,6 @@ function About() {
         </div>
       </motion.section>
 
-      {/* Team */}
       <motion.section
         className="container mx-auto px-md py-lg max-w-3xl"
         initial={{ opacity: 0, y: 20 }}
@@ -143,7 +139,6 @@ function About() {
         </div>
       </motion.section>
 
-      {/* CTA */}
       <motion.section
         className="bg-primary-main text-background-card py-lg"
         initial={{ opacity: 0, y: 20 }}

@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
-import { motion, AnimatePresence } from 'framer-motion';
-import { getAllCategories } from '../services/api';
-import CategoryComponent from './course/Category';
-import Loader from './common/Loader';
-import Button from './common/Button';
+import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
+import { motion, AnimatePresence } from "framer-motion";
+import { getAllCategories } from "../services/api";
+import CategoryComponent from "./course/Category";
+import Loader from "./common/Loader";
+import Button from "./common/Button";
 
 function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
   const [categories, setCategories] = useState([]);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [errorCategories, setErrorCategories] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState(currentFilters.category || '');
-  const [minPrice, setMinPrice] = useState(currentFilters.minPrice || '');
-  const [maxPrice, setMaxPrice] = useState(currentFilters.maxPrice || '');
+  const [selectedCategory, setSelectedCategory] = useState(
+    currentFilters.category || ""
+  );
+  const [minPrice, setMinPrice] = useState(currentFilters.minPrice || "");
+  const [maxPrice, setMaxPrice] = useState(currentFilters.maxPrice || "");
   const [isCategoryOpen, setIsCategoryOpen] = useState(true);
   const [isPriceOpen, setIsPriceOpen] = useState(true);
 
@@ -24,7 +26,7 @@ function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
         const data = await getAllCategories();
         setCategories(data.categories);
       } catch (err) {
-        setErrorCategories(err.message || 'Failed to load categories.');
+        setErrorCategories(err.message || "Failed to load categories.");
       } finally {
         setLoadingCategories(false);
       }
@@ -33,20 +35,24 @@ function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
   }, []);
 
   useEffect(() => {
-    setSelectedCategory(currentFilters.category || '');
-    setMinPrice(currentFilters.minPrice || '');
-    setMaxPrice(currentFilters.maxPrice || '');
+    setSelectedCategory(currentFilters.category || "");
+    setMinPrice(currentFilters.minPrice || "");
+    setMaxPrice(currentFilters.maxPrice || "");
   }, [currentFilters]);
 
   const handleApplyFilters = () => {
     const newFilters = {
       category: selectedCategory,
-      minPrice: minPrice !== '' ? Number(minPrice) : undefined,
-      maxPrice: maxPrice !== '' ? Number(maxPrice) : undefined,
+      minPrice: minPrice !== "" ? Number(minPrice) : undefined,
+      maxPrice: maxPrice !== "" ? Number(maxPrice) : undefined,
     };
 
     Object.keys(newFilters).forEach((key) => {
-      if (newFilters[key] === '' || newFilters[key] === undefined || (typeof newFilters[key] === 'number' && isNaN(newFilters[key]))) {
+      if (
+        newFilters[key] === "" ||
+        newFilters[key] === undefined ||
+        (typeof newFilters[key] === "number" && isNaN(newFilters[key]))
+      ) {
         delete newFilters[key];
       }
     });
@@ -55,9 +61,9 @@ function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
   };
 
   const handleClearFilters = () => {
-    setSelectedCategory('');
-    setMinPrice('');
-    setMaxPrice('');
+    setSelectedCategory("");
+    setMinPrice("");
+    setMaxPrice("");
     onFilterChange({});
     onClose();
   };
@@ -74,20 +80,19 @@ function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
         </button>
       </div>
 
-      {/* Category Filter */}
       <div className="mb-lg">
         <button
           className="flex justify-between w-full text-lg font-semibold text-text-primary mb-md"
           onClick={() => setIsCategoryOpen(!isCategoryOpen)}
         >
           Categories
-          <span>{isCategoryOpen ? '▲' : '▼'}</span>
+          <span>{isCategoryOpen ? "▲" : "▼"}</span>
         </button>
         <AnimatePresence>
           {isCategoryOpen && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
+              animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
@@ -96,14 +101,20 @@ function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
               ) : errorCategories ? (
                 <p className="text-accent-error text-sm">{errorCategories}</p>
               ) : categories.length === 0 ? (
-                <p className="text-text-secondary text-sm">No categories available.</p>
+                <p className="text-text-secondary text-sm">
+                  No categories available.
+                </p>
               ) : (
                 <div className="flex flex-wrap gap-sm">
                   {categories.map((cat) => (
                     <CategoryComponent
                       key={cat._id}
                       category={cat}
-                      onClick={() => setSelectedCategory((prev) => (prev === cat._id ? '' : cat._id))}
+                      onClick={() =>
+                        setSelectedCategory((prev) =>
+                          prev === cat._id ? "" : cat._id
+                        )
+                      }
                       isSelected={selectedCategory === cat._id}
                     />
                   ))}
@@ -114,20 +125,19 @@ function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
         </AnimatePresence>
       </div>
 
-      {/* Price Filter */}
       <div className="mb-lg">
         <button
           className="flex justify-between w-full text-lg font-semibold text-text-primary mb-md"
           onClick={() => setIsPriceOpen(!isPriceOpen)}
         >
           Price Range
-          <span>{isPriceOpen ? '▲' : '▼'}</span>
+          <span>{isPriceOpen ? "▲" : "▼"}</span>
         </button>
         <AnimatePresence>
           {isPriceOpen && (
             <motion.div
               initial={{ height: 0, opacity: 0 }}
-              animate={{ height: 'auto', opacity: 1 }}
+              animate={{ height: "auto", opacity: 1 }}
               exit={{ height: 0, opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
@@ -153,9 +163,12 @@ function FilterSidebar({ currentFilters, onFilterChange, onClose }) {
         </AnimatePresence>
       </div>
 
-      {/* Action Buttons */}
       <div className="flex flex-col space-y-sm">
-        <Button text="Apply Filters" onClick={handleApplyFilters} className="w-full" />
+        <Button
+          text="Apply Filters"
+          onClick={handleApplyFilters}
+          className="w-full"
+        />
         <Button
           text="Clear Filters"
           variant="outline"

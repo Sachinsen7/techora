@@ -1,15 +1,21 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { login as authServiceLogin, signup as authServiceSignup } from '../../services/auth';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import {
+  login as authServiceLogin,
+  signup as authServiceSignup,
+} from "../../services/auth";
 
 // Async thunk for login
 export const loginUser = createAsyncThunk(
-  'auth/loginUser',
+  "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
     try {
-      const data = await authServiceLogin(credentials.email, credentials.password);
+      const data = await authServiceLogin(
+        credentials.email,
+        credentials.password
+      );
       // Persist token immediately so interceptors work on next requests
       if (data?.token) {
-        localStorage.setItem('token', data.token);
+        localStorage.setItem("token", data.token);
       }
       return {
         token: data.token,
@@ -17,16 +23,16 @@ export const loginUser = createAsyncThunk(
           userId: data.userId,
           role: data.role,
           // Backend signin response does not include names; fall back to profile fetch later
-          firstName: data.firstName || '',
-          lastName: data.lastName || '',
+          firstName: data.firstName || "",
+          lastName: data.lastName || "",
           email: credentials.email,
           profilePicture: data.profilePicture || null,
-          bio: data.bio || ''
-        }
+          bio: data.bio || "",
+        },
       };
     } catch (error) {
       const errorMessage = error.response?.data?.details
-        ? error.response.data.details.map(err => err.message).join('; ')
+        ? error.response.data.details.map((err) => err.message).join("; ")
         : error.message;
       return rejectWithValue(errorMessage);
     }
@@ -35,7 +41,7 @@ export const loginUser = createAsyncThunk(
 
 // Async thunk for signup
 export const signupUser = createAsyncThunk(
-  'auth/signupUser',
+  "auth/signupUser",
   async (userData, { rejectWithValue }) => {
     try {
       const data = await authServiceSignup(
@@ -54,8 +60,8 @@ export const signupUser = createAsyncThunk(
           lastName: userData.lastName,
           email: userData.email,
           profilePicture: data.profilePicture || null,
-          bio: data.bio || ''
-        }
+          bio: data.bio || "",
+        },
       };
     } catch (error) {
       return rejectWithValue(error.message);
@@ -65,22 +71,25 @@ export const signupUser = createAsyncThunk(
 
 // Async thunk for fetching complete user profile
 export const fetchUserProfile = createAsyncThunk(
-  'auth/fetchUserProfile',
+  "auth/fetchUserProfile",
   async (token, { rejectWithValue }) => {
     try {
-      const response = await fetch('http://localhost:3000/api/user/profile', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        "https://techora-1.onrender.com/api/user/profile",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
         return data.user;
       } else {
-        throw new Error('Failed to fetch user profile');
+        throw new Error("Failed to fetch user profile");
       }
     } catch (error) {
       return rejectWithValue(error.message);
@@ -92,8 +101,8 @@ export const fetchUserProfile = createAsyncThunk(
 const decodeToken = (token) => {
   if (!token) return null;
   try {
-    const base64Url = token.split('.')[1];
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const decodedPayload = JSON.parse(atob(base64));
     return decodedPayload;
   } catch (error) {
@@ -104,26 +113,26 @@ const decodeToken = (token) => {
 
 // Initial state
 const initialState = {
-  token: localStorage.getItem('token') || null,
+  token: localStorage.getItem("token") || null,
   user: null,
   isAuthenticated: false,
   loading: true,
   error: null,
   modal: {
     isOpen: false,
-    title: '',
-    message: '',
-    type: 'info',
+    title: "",
+    message: "",
+    type: "info",
   },
 };
 
 // Create the auth slice
 const authSlice = createSlice({
-  name: 'auth',
+  name: "auth",
   initialState,
   reducers: {
     initializeAuth: (state) => {
-      const storedToken = localStorage.getItem('token');
+      const storedToken = localStorage.getItem("token");
       if (storedToken) {
         const decodedUser = decodeToken(storedToken);
         if (decodedUser && decodedUser.id && decodedUser.role) {
@@ -131,15 +140,15 @@ const authSlice = createSlice({
           state.user = {
             userId: decodedUser.id,
             role: decodedUser.role,
-            firstName: decodedUser.firstName || 'User',
-            lastName: decodedUser.lastName || '',
-            email: decodedUser.email || '',
+            firstName: decodedUser.firstName || "User",
+            lastName: decodedUser.lastName || "",
+            email: decodedUser.email || "",
             profilePicture: decodedUser.profilePicture || null,
-            bio: decodedUser.bio || '',
+            bio: decodedUser.bio || "",
           };
           state.isAuthenticated = true;
         } else {
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
           state.token = null;
           state.user = null;
           state.isAuthenticated = false;
@@ -148,7 +157,7 @@ const authSlice = createSlice({
       state.loading = false;
     },
     logout: (state) => {
-      localStorage.removeItem('token');
+      localStorage.removeItem("token");
       state.token = null;
       state.user = null;
       state.isAuthenticated = false;
@@ -162,7 +171,7 @@ const authSlice = createSlice({
     },
     oauthLogin: (state, action) => {
       const { userData, authToken } = action.payload;
-      localStorage.setItem('token', authToken);
+      localStorage.setItem("token", authToken);
       state.token = authToken;
       state.user = userData;
       state.isAuthenticated = true;
@@ -170,9 +179,9 @@ const authSlice = createSlice({
       state.error = null;
       state.modal = {
         isOpen: true,
-        title: 'Welcome!',
-        message: 'Successfully signed in with Google!',
-        type: 'success',
+        title: "Welcome!",
+        message: "Successfully signed in with Google!",
+        type: "success",
       };
     },
     updateUser: (state, action) => {
@@ -183,9 +192,9 @@ const authSlice = createSlice({
     showModal: (state, action) => {
       state.modal = {
         isOpen: true,
-        title: '',
-        message: '',
-        type: 'info',
+        title: "",
+        message: "",
+        type: "info",
         ...action.payload,
       };
     },
@@ -211,9 +220,13 @@ const authSlice = createSlice({
         state.error = null;
         state.modal = {
           isOpen: true,
-          title: 'Login Successful!',
-          message: `Welcome back${action.payload.user.firstName ? `, ${action.payload.user.firstName}` : ''}!`,
-          type: 'success',
+          title: "Login Successful!",
+          message: `Welcome back${
+            action.payload.user.firstName
+              ? `, ${action.payload.user.firstName}`
+              : ""
+          }!`,
+          type: "success",
         };
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -221,9 +234,9 @@ const authSlice = createSlice({
         state.error = action.payload;
         state.modal = {
           isOpen: true,
-          title: 'Login Failed',
-          message: action.payload || 'Login failed. Please try again.',
-          type: 'error',
+          title: "Login Failed",
+          message: action.payload || "Login failed. Please try again.",
+          type: "error",
         };
       })
       // Signup cases

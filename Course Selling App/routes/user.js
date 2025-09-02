@@ -74,12 +74,10 @@ userRouter.get("/profile", async (req, res) => {
       .json({ message: "User profile fetched successfully", user });
   } catch (error) {
     console.error("Error fetching user profile:", error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while fetching profile.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An error occurred while fetching profile.",
+      error: error.message,
+    });
   }
 });
 
@@ -141,12 +139,10 @@ userRouter.put(
 userRouter.put("/change-password", async (req, res) => {
   const validationResult = changePasswordSchema.safeParse(req.body);
   if (!validationResult.success) {
-    return res
-      .status(400)
-      .json({
-        message: "Invalid input data for password change",
-        errors: validationResult.error.errors,
-      });
+    return res.status(400).json({
+      message: "Invalid input data for password change",
+      errors: validationResult.error.errors,
+    });
   }
 
   const { currentPassword, newPassword } = validationResult.data;
@@ -174,12 +170,10 @@ userRouter.put("/change-password", async (req, res) => {
     res.status(200).json({ message: "Password changed successfully." });
   } catch (error) {
     console.error("Error changing password:", error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while changing password.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An error occurred while changing password.",
+      error: error.message,
+    });
   }
 });
 
@@ -202,24 +196,20 @@ userRouter.get("/wishlist", async (req, res) => {
     });
   } catch (error) {
     console.error("Error fetching wishlist:", error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while fetching wishlist.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An error occurred while fetching wishlist.",
+      error: error.message,
+    });
   }
 });
 
 userRouter.post("/wishlist", async (req, res) => {
   const validationResult = wishlistSchema.safeParse(req.body);
   if (!validationResult.success) {
-    return res
-      .status(400)
-      .json({
-        message: "Invalid course ID",
-        errors: validationResult.error.errors,
-      });
+    return res.status(400).json({
+      message: "Invalid course ID",
+      errors: validationResult.error.errors,
+    });
   }
 
   const { courseId } = validationResult.data;
@@ -256,12 +246,10 @@ userRouter.post("/wishlist", async (req, res) => {
     res.status(200).json({ message: "Course added to wishlist successfully." });
   } catch (error) {
     console.error("Error adding to wishlist:", error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while adding to wishlist.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An error occurred while adding to wishlist.",
+      error: error.message,
+    });
   }
 });
 
@@ -270,12 +258,10 @@ userRouter.delete("/wishlist/:courseId", async (req, res) => {
   const validationResult = wishlistSchema.safeParse({ courseId });
 
   if (!validationResult.success) {
-    return res
-      .status(400)
-      .json({
-        message: "Invalid course ID format",
-        errors: validationResult.error.errors,
-      });
+    return res.status(400).json({
+      message: "Invalid course ID format",
+      errors: validationResult.error.errors,
+    });
   }
 
   try {
@@ -301,12 +287,10 @@ userRouter.delete("/wishlist/:courseId", async (req, res) => {
       .json({ message: "Course removed from wishlist successfully." });
   } catch (error) {
     console.error("Error removing from wishlist:", error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while removing from wishlist.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An error occurred while removing from wishlist.",
+      error: error.message,
+    });
   }
 });
 
@@ -315,12 +299,10 @@ userRouter.get("/wishlist/check/:courseId", async (req, res) => {
   const validationResult = wishlistSchema.safeParse({ courseId });
 
   if (!validationResult.success) {
-    return res
-      .status(400)
-      .json({
-        message: "Invalid course ID format",
-        errors: validationResult.error.errors,
-      });
+    return res.status(400).json({
+      message: "Invalid course ID format",
+      errors: validationResult.error.errors,
+    });
   }
 
   try {
@@ -336,12 +318,10 @@ userRouter.get("/wishlist/check/:courseId", async (req, res) => {
     });
   } catch (error) {
     console.error("Error checking wishlist status:", error);
-    res
-      .status(500)
-      .json({
-        message: "An error occurred while checking wishlist status.",
-        error: error.message,
-      });
+    res.status(500).json({
+      message: "An error occurred while checking wishlist status.",
+      error: error.message,
+    });
   }
 });
 

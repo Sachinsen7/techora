@@ -1,159 +1,161 @@
-const crypto = require('crypto');
-const axios = require('axios');
+const crypto = require("crypto");
+const axios = require("axios");
 
 class PhonePeService {
-    constructor() {
-        this.merchantId = process.env.PHONEPE_MERCHANT_ID;
-        this.saltKey = process.env.PHONEPE_SALT_KEY;
-        this.saltIndex = process.env.PHONEPE_SALT_INDEX || 1;
-        this.baseUrl = process.env.PHONEPE_BASE_URL || 'https://api-preprod.phonepe.com/apis/pg-sandbox';
-        this.redirectUrl = process.env.PHONEPE_REDIRECT_URL;
-        this.webhookUrl = process.env.PHONEPE_WEBHOOK_URL;
-    }
+  constructor() {
+    this.merchantId = process.env.PHONEPE_MERCHANT_ID;
+    this.saltKey = process.env.PHONEPE_SALT_KEY;
+    this.saltIndex = process.env.PHONEPE_SALT_INDEX || 1;
+    this.baseUrl =
+      process.env.PHONEPE_BASE_URL ||
+      "https://api-preprod.phonepe.com/apis/pg-sandbox";
+    this.redirectUrl = process.env.PHONEPE_REDIRECT_URL;
+    this.webhookUrl = process.env.PHONEPE_WEBHOOK_URL;
+  }
 
-    // Generate checksum for PhonePe API
-    generateChecksum(payload) {
-        const string = payload + '/pg/v1/pay' + this.saltKey;
-        const sha256 = crypto.createHash('sha256').update(string).digest('hex');
-        return sha256 + '###' + this.saltIndex;
-    }
+  generateChecksum(payload) {
+    const string = payload + "/pg/v1/pay" + this.saltKey;
+    const sha256 = crypto.createHash("sha256").update(string).digest("hex");
+    return sha256 + "###" + this.saltIndex;
+  }
 
-    // Generate checksum for status check
-    generateStatusChecksum(merchantTransactionId) {
-        const string = `/pg/v1/status/${this.merchantId}/${merchantTransactionId}` + this.saltKey;
-        const sha256 = crypto.createHash('sha256').update(string).digest('hex');
-        return sha256 + '###' + this.saltIndex;
-    }
+  generateStatusChecksum(merchantTransactionId) {
+    const string =
+      `/pg/v1/status/${this.merchantId}/${merchantTransactionId}` +
+      this.saltKey;
+    const sha256 = crypto.createHash("sha256").update(string).digest("hex");
+    return sha256 + "###" + this.saltIndex;
+  }
 
-    // Verify webhook checksum
-    verifyWebhookChecksum(payload, receivedChecksum) {
-        const string = payload + this.saltKey;
-        const sha256 = crypto.createHash('sha256').update(string).digest('hex');
-        const expectedChecksum = sha256 + '###' + this.saltIndex;
-        return expectedChecksum === receivedChecksum;
-    }
+  verifyWebhookChecksum(payload, receivedChecksum) {
+    const string = payload + this.saltKey;
+    const sha256 = crypto.createHash("sha256").update(string).digest("hex");
+    const expectedChecksum = sha256 + "###" + this.saltIndex;
+    return expectedChecksum === receivedChecksum;
+  }
 
-    // Create payment request
-    async createPayment(paymentData) {
-        try {
-            const {
-                merchantTransactionId,
-                amount, // Amount in paise (1 INR = 100 paise)
-                userId,
-                courseId,
-                userPhone,
-                userEmail
-            } = paymentData;
+  async createPayment(paymentData) {
+    try {
+      const {
+        merchantTransactionId,
+        amount,
+        userId,
+        courseId,
+        userPhone,
+        userEmail,
+      } = paymentData;
 
-            const payload = {
-                merchantId: this.merchantId,
-                merchantTransactionId: merchantTransactionId,
-                merchantUserId: userId,
-                amount: amount,
-                redirectUrl: `${this.redirectUrl}?transactionId=${merchantTransactionId}`,
-                redirectMode: 'POST',
-                callbackUrl: this.webhookUrl,
-                mobileNumber: userPhone,
-                paymentInstrument: {
-                    type: 'PAY_PAGE'
-                }
-            };
+      const payload = {
+        merchantId: this.merchantId,
+        merchantTransactionId: merchantTransactionId,
+        merchantUserId: userId,
+        amount: amount,
+        redirectUrl: `${this.redirectUrl}?transactionId=${merchantTransactionId}`,
+        redirectMode: "POST",
+        callbackUrl: this.webhookUrl,
+        mobileNumber: userPhone,
+        paymentInstrument: {
+          type: "PAY_PAGE",
+        },
+      };
 
-            const base64Payload = Buffer.from(JSON.stringify(payload)).toString('base64');
-            const checksum = this.generateChecksum(base64Payload);
+      const base64Payload = Buffer.from(JSON.stringify(payload)).toString(
+        "base64"
+      );
+      const checksum = this.generateChecksum(base64Payload);
 
-            const response = await axios.post(
-                `${this.baseUrl}/pg/v1/pay`,
-                {
-                    request: base64Payload
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-VERIFY': checksum
-                    }
-                }
-            );
-
-            return {
-                success: true,
-                data: response.data,
-                paymentUrl: response.data.data?.instrumentResponse?.redirectInfo?.url
-            };
-
-        } catch (error) {
-            console.error('PhonePe payment creation error:', error.response?.data || error.message);
-            return {
-                success: false,
-                error: error.response?.data || error.message
-            };
+      const response = await axios.post(
+        `${this.baseUrl}/pg/v1/pay`,
+        {
+          request: base64Payload,
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-VERIFY": checksum,
+          },
         }
+      );
+
+      return {
+        success: true,
+        data: response.data,
+        paymentUrl: response.data.data?.instrumentResponse?.redirectInfo?.url,
+      };
+    } catch (error) {
+      console.error(
+        "PhonePe payment creation error:",
+        error.response?.data || error.message
+      );
+      return {
+        success: false,
+        error: error.response?.data || error.message,
+      };
     }
+  }
 
-    // Check payment status
-    async checkPaymentStatus(merchantTransactionId) {
-        try {
-            const checksum = this.generateStatusChecksum(merchantTransactionId);
+  async checkPaymentStatus(merchantTransactionId) {
+    try {
+      const checksum = this.generateStatusChecksum(merchantTransactionId);
 
-            const response = await axios.get(
-                `${this.baseUrl}/pg/v1/status/${this.merchantId}/${merchantTransactionId}`,
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-VERIFY': checksum,
-                        'X-MERCHANT-ID': this.merchantId
-                    }
-                }
-            );
-
-            return {
-                success: true,
-                data: response.data
-            };
-
-        } catch (error) {
-            console.error('PhonePe status check error:', error.response?.data || error.message);
-            return {
-                success: false,
-                error: error.response?.data || error.message
-            };
+      const response = await axios.get(
+        `${this.baseUrl}/pg/v1/status/${this.merchantId}/${merchantTransactionId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "X-VERIFY": checksum,
+            "X-MERCHANT-ID": this.merchantId,
+          },
         }
+      );
+
+      return {
+        success: true,
+        data: response.data,
+      };
+    } catch (error) {
+      console.error(
+        "PhonePe status check error:",
+        error.response?.data || error.message
+      );
+      return {
+        success: false,
+        error: error.response?.data || error.message,
+      };
     }
+  }
 
-    // Process webhook notification
-    processWebhook(payload, checksum) {
-        try {
-            // Verify checksum
-            if (!this.verifyWebhookChecksum(payload, checksum)) {
-                return {
-                    success: false,
-                    error: 'Invalid checksum'
-                };
-            }
+  processWebhook(payload, checksum) {
+    try {
+      if (!this.verifyWebhookChecksum(payload, checksum)) {
+        return {
+          success: false,
+          error: "Invalid checksum",
+        };
+      }
 
-            // Decode payload
-            const decodedPayload = JSON.parse(Buffer.from(payload, 'base64').toString());
-            
-            return {
-                success: true,
-                data: decodedPayload
-            };
+      const decodedPayload = JSON.parse(
+        Buffer.from(payload, "base64").toString()
+      );
 
-        } catch (error) {
-            console.error('PhonePe webhook processing error:', error.message);
-            return {
-                success: false,
-                error: error.message
-            };
-        }
+      return {
+        success: true,
+        data: decodedPayload,
+      };
+    } catch (error) {
+      console.error("PhonePe webhook processing error:", error.message);
+      return {
+        success: false,
+        error: error.message,
+      };
     }
+  }
 
-    // Generate unique transaction ID
-    generateTransactionId(prefix = 'TXN') {
-        const timestamp = Date.now();
-        const random = Math.random().toString(36).substring(2, 8).toUpperCase();
-        return `${prefix}_${timestamp}_${random}`;
-    }
+  generateTransactionId(prefix = "TXN") {
+    const timestamp = Date.now();
+    const random = Math.random().toString(36).substring(2, 8).toUpperCase();
+    return `${prefix}_${timestamp}_${random}`;
+  }
 }
 
 module.exports = new PhonePeService();

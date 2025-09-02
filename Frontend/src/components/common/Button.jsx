@@ -1,16 +1,24 @@
-import PropTypes from 'prop-types';
-import { motion } from 'framer-motion';
-import { twMerge } from 'tailwind-merge';
+import PropTypes from "prop-types";
+import { motion } from "framer-motion";
+import { twMerge } from "tailwind-merge";
 
-function Button({ text, onClick, className, disabled, variant, children, type, ...rest }) {
+function Button({
+  text,
+  onClick,
+  className,
+  disabled,
+  variant,
+  children,
+  type,
+  ...rest
+}) {
   const baseClasses =
-    'px-4 py-2 rounded-md font-sans font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:ring-offset-2 flex items-center justify-center';
-
+    "px-4 py-2 rounded-md font-sans font-semibold transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:ring-offset-2 flex items-center justify-center";
 
   const variantClasses =
-    variant === 'outline'
-      ? 'bg-transparent border border-[#1B3C53] text-[#1B3C53] hover:bg-[#F9FAFB] hover:border-[#456882]'
-      : 'bg-[#1B3C53] text-[#FFFFFF] hover:bg-[#456882]';
+    variant === "outline"
+      ? "bg-transparent border border-[#1B3C53] text-[#1B3C53] hover:bg-[#F9FAFB] hover:border-[#456882]"
+      : "bg-[#1B3C53] text-[#FFFFFF] hover:bg-[#456882]";
 
   return (
     <motion.button
@@ -18,30 +26,27 @@ function Button({ text, onClick, className, disabled, variant, children, type, .
       className={twMerge(
         baseClasses,
         variantClasses,
-        disabled ? 'opacity-50 cursor-not-allowed' : '',
+        disabled ? "opacity-50 cursor-not-allowed" : "",
         className
       )}
       onClick={(e) => {
-        // Don't stop propagation if this button is inside a Link component
-        // Check if the button is inside a Link by looking at parent elements
-        const isInsideLink = e.currentTarget.closest('a') !== null;
+        const isInsideLink = e.currentTarget.closest("a") !== null;
 
         if (!isInsideLink) {
           e.stopPropagation();
         }
 
-        if (typeof onClick === 'function') {
+        if (typeof onClick === "function") {
           onClick(e);
-        } else if (type !== 'submit' && !isInsideLink) {
-          // Only warn if it's not a submit button and not inside a Link
-          console.warn('Button onClick is not a function or is undefined.');
+        } else if (type !== "submit" && !isInsideLink) {
+          console.warn("Button onClick is not a function or is undefined.");
         }
       }}
       disabled={disabled}
       whileHover={{ scale: disabled ? 1 : 1.05 }}
       whileTap={{ scale: disabled ? 1 : 0.95 }}
       transition={{ duration: 0.2 }}
-      aria-label={text || (typeof children === 'string' ? children : 'Button')}
+      aria-label={text || (typeof children === "string" ? children : "Button")}
       {...rest}
     >
       {children || text}
@@ -54,20 +59,19 @@ Button.propTypes = {
   className: PropTypes.string,
   onClick: PropTypes.func,
   disabled: PropTypes.bool,
-  variant: PropTypes.oneOf(['solid', 'outline']),
+  variant: PropTypes.oneOf(["solid", "outline"]),
   children: PropTypes.node,
-  type: PropTypes.oneOf(['button', 'submit', 'reset']),
+  type: PropTypes.oneOf(["button", "submit", "reset"]),
 };
 
-
 Button.defaultProps = {
-  text: '',
-  className: '',
+  text: "",
+  className: "",
   onClick: undefined,
   disabled: false,
-  variant: 'solid',
+  variant: "solid",
   children: null,
-  type: 'button',
+  type: "button",
 };
 
 export default Button;

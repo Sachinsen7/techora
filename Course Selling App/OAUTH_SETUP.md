@@ -23,7 +23,7 @@
 2. Click "Create Credentials" > "OAuth 2.0 Client IDs"
 3. Choose "Web application"
 4. Add authorized redirect URIs:
-   - `http://localhost:3000/api/auth/google/callback` (development)
+   - `https://techora-1.onrender.com/api/auth/google/callback` (development)
    - `https://yourdomain.com/api/auth/google/callback` (production)
 5. Copy Client ID and Client Secret
 
@@ -34,7 +34,7 @@ Add to your `.env` file:
 ```env
 GOOGLE_CLIENT_ID=your-google-client-id-here
 GOOGLE_CLIENT_SECRET=your-google-client-secret-here
-GOOGLE_CALLBACK_URL=http://localhost:3000/api/auth/google/callback
+GOOGLE_CALLBACK_URL=https://techora-1.onrender.com/api/auth/google/callback
 ```
 
 ## 💳 PhonePe Payment Gateway Setup
@@ -63,8 +63,8 @@ PHONEPE_MERCHANT_ID=your-merchant-id
 PHONEPE_SALT_KEY=your-salt-key
 PHONEPE_SALT_INDEX=1
 PHONEPE_BASE_URL=https://api-preprod.phonepe.com/apis/pg-sandbox
-PHONEPE_REDIRECT_URL=http://localhost:3000/api/payment/phonepe/callback
-PHONEPE_WEBHOOK_URL=http://localhost:3000/api/payment/phonepe/webhook
+PHONEPE_REDIRECT_URL=https://techora-1.onrender.com/api/payment/phonepe/callback
+PHONEPE_WEBHOOK_URL=https://techora-1.onrender.com/api/payment/phonepe/webhook
 ```
 
 ### 4. Test Environment
@@ -99,7 +99,7 @@ import AuthSuccess from "../pages/AuthSuccess";
 Add to your frontend `.env` file:
 
 ```env
-VITE_API_BASE_URL=http://localhost:3000
+VITE_API_BASE_URL=https://techora-1.onrender.com
 ```
 
 ## 🔧 Testing

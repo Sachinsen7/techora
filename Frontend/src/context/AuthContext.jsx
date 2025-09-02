@@ -48,7 +48,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  // Function to fetch complete user profile
   const fetchCompleteUserProfile = useCallback(async (token) => {
     try {
       const response = await fetch(
@@ -82,7 +81,6 @@ export const AuthProvider = ({ children }) => {
         if (decodedUser && decodedUser.id && decodedUser.role) {
           setToken(storedToken);
 
-          // First set basic user data from token
           const basicUser = {
             userId: decodedUser.id,
             role: decodedUser.role,
@@ -98,7 +96,6 @@ export const AuthProvider = ({ children }) => {
           );
           setUser(basicUser);
 
-          // Then fetch complete profile data
           await fetchCompleteUserProfile(storedToken);
         } else {
           localStorage.removeItem("token");
@@ -222,7 +219,6 @@ export const AuthProvider = ({ children }) => {
     });
   }, []);
 
-  // Function to update user data in context
   const updateUser = useCallback((updatedUserData) => {
     setUser((prev) => ({
       ...prev,
@@ -230,7 +226,6 @@ export const AuthProvider = ({ children }) => {
     }));
   }, []);
 
-  // OAuth login function (for use by AuthSuccess component)
   const oauthLogin = useCallback((userData, authToken) => {
     localStorage.setItem("token", authToken);
     setToken(authToken);

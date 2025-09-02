@@ -1,12 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion, AnimatePresence } from 'framer-motion';
-import { useSelector } from 'react-redux';
-import { selectIsAuthenticated } from '../Redux/slices/authSlice';
-import { useWishlist } from '../hooks/useWishlist';
-import Loader from '../components/common/Loader';
-import Button from '../components/common/Button';
-import { PUBLIC_ROUTES, PROTECTED_ROUTES } from '../routes';
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { motion, AnimatePresence } from "framer-motion";
+import { useSelector } from "react-redux";
+import { selectIsAuthenticated } from "../Redux/slices/authSlice";
+import { useWishlist } from "../hooks/useWishlist";
+import Loader from "../components/common/Loader";
+import Button from "../components/common/Button";
+import { PUBLIC_ROUTES, PROTECTED_ROUTES } from "../routes";
 
 function WishlistPage() {
   const isAuthenticated = useSelector(selectIsAuthenticated);
@@ -16,7 +16,7 @@ function WishlistPage() {
 
   useEffect(() => {
     if (!isAuthenticated) {
-      navigate('/login', { replace: true });
+      navigate("/login", { replace: true });
       return;
     }
   }, [isAuthenticated, navigate]);
@@ -47,10 +47,12 @@ function WishlistPage() {
           transition={{ duration: 0.5 }}
         >
           <div className="flex items-center justify-between mb-8">
-            <h1 className="text-3xl font-bold text-text-primary">My Wishlist</h1>
+            <h1 className="text-3xl font-bold text-text-primary">
+              My Wishlist
+            </h1>
             <div className="flex items-center space-x-4">
               <span className="text-text-secondary">
-                {wishlist.length} {wishlist.length === 1 ? 'course' : 'courses'}
+                {wishlist.length} {wishlist.length === 1 ? "course" : "courses"}
               </span>
               <Link
                 to={PUBLIC_ROUTES.courseListing}
@@ -92,7 +94,8 @@ function WishlistPage() {
                 Your wishlist is empty
               </h2>
               <p className="text-text-secondary mb-8 max-w-md mx-auto">
-                Start adding courses you're interested in to keep track of them and enroll later.
+                Start adding courses you're interested in to keep track of them
+                and enroll later.
               </p>
               <Button
                 text="Explore Courses"
@@ -115,12 +118,17 @@ function WishlistPage() {
                   >
                     <div className="relative">
                       <img
-                        src={course.imageUrl || 'https://placehold.co/400x200/F9FAFB/1B3C53?text=Course'}
+                        src={
+                          course.imageUrl ||
+                          "https://placehold.co/400x200/F9FAFB/1B3C53?text=Course"
+                        }
                         alt={course.title}
                         className="w-full h-48 object-cover"
                       />
                       <button
-                        onClick={() => handleRemoveFromWishlist(course._id, course.title)}
+                        onClick={() =>
+                          handleRemoveFromWishlist(course._id, course.title)
+                        }
                         disabled={removingCourseId === course._id}
                         className="absolute top-3 right-3 p-2 bg-white rounded-full shadow-md hover:bg-red-50 transition-colors duration-200 group"
                         title="Remove from wishlist"
@@ -140,10 +148,24 @@ function WishlistPage() {
                     </div>
 
                     <div className="p-6">
-                      <h3 className="text-lg font-semibold text-text-primary mb-2 overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical' }}>
+                      <h3
+                        className="text-lg font-semibold text-text-primary mb-2 overflow-hidden"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 2,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
                         {course.title}
                       </h3>
-                      <p className="text-text-secondary text-sm mb-4 overflow-hidden" style={{ display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>
+                      <p
+                        className="text-text-secondary text-sm mb-4 overflow-hidden"
+                        style={{
+                          display: "-webkit-box",
+                          WebkitLineClamp: 3,
+                          WebkitBoxOrient: "vertical",
+                        }}
+                      >
                         {course.description}
                       </p>
 
@@ -160,21 +182,22 @@ function WishlistPage() {
                         </div>
                         {course.averageRating > 0 && (
                           <div className="flex items-center space-x-1">
-                            <svg className="w-4 h-4 text-yellow-400 fill-current" viewBox="0 0 24 24">
+                            <svg
+                              className="w-4 h-4 text-yellow-400 fill-current"
+                              viewBox="0 0 24 24"
+                            >
                               <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                             </svg>
                             <span className="text-sm text-text-secondary">
-                              {course.averageRating.toFixed(1)} ({course.numberOfReviews})
+                              {course.averageRating.toFixed(1)} (
+                              {course.numberOfReviews})
                             </span>
                           </div>
                         )}
                       </div>
 
                       <div className="flex space-x-3">
-                        <Link
-                          to={`/course/${course._id}`}
-                          className="flex-1"
-                        >
+                        <Link to={`/course/${course._id}`} className="flex-1">
                           <Button
                             text="View Details"
                             variant="outline"

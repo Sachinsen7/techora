@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectUser, selectAuthLoading } from '../Redux/slices/authSlice';
-import { showModal } from '../Redux/slices/uiSlice';
-import { createCourse, updateInstructorCourse, getInstructorCourses, getAllCategories } from '../services/api';
-import Loader from '../components/common/Loader';
-import Button from '../components/common/Button';
-import { PROTECTED_ROUTES } from '../routes';
+import React, { useState, useEffect, useRef } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUser, selectAuthLoading } from "../Redux/slices/authSlice";
+import { showModal } from "../Redux/slices/uiSlice";
+import {
+  createCourse,
+  updateInstructorCourse,
+  getInstructorCourses,
+  getAllCategories,
+} from "../services/api";
+import Loader from "../components/common/Loader";
+import Button from "../components/common/Button";
+import { PROTECTED_ROUTES } from "../routes";
 
 function InstructorCourseFormPage() {
   const { id: courseId } = useParams();
@@ -14,16 +19,16 @@ function InstructorCourseFormPage() {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
   const authLoading = useSelector(selectAuthLoading);
-  const token = localStorage.getItem('token');
+  const token = localStorage.getItem("token");
   const fileInputRef = useRef(null);
 
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
-    imageUrl: '',
-    price: '',
-    category: '',
-    status: 'draft',
+    title: "",
+    description: "",
+    imageUrl: "",
+    price: "",
+    category: "",
+    status: "draft",
   });
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState(null);
@@ -35,19 +40,21 @@ function InstructorCourseFormPage() {
 
   // Separate useEffect for auth check
   useEffect(() => {
-    if (!authLoading && (!user || user.role !== 'instructor')) {
+    if (!authLoading && (!user || user.role !== "instructor")) {
       navigate(PROTECTED_ROUTES.dashboard, { replace: true });
-      dispatch(showModal({
-        title: 'Access Denied',
-        message: 'You must be an instructor to manage courses.',
-        type: 'error',
-      }));
+      dispatch(
+        showModal({
+          title: "Access Denied",
+          message: "You must be an instructor to manage courses.",
+          type: "error",
+        })
+      );
     }
   }, [authLoading, user, navigate, dispatch]);
 
   // Separate useEffect for data fetching
   useEffect(() => {
-    if (authLoading || !user || user.role !== 'instructor') {
+    if (authLoading || !user || user.role !== "instructor") {
       return;
     }
 
@@ -61,7 +68,9 @@ function InstructorCourseFormPage() {
         if (courseId) {
           setIsEditMode(true);
           const instructorCoursesData = await getInstructorCourses();
-          const courseToEdit = instructorCoursesData.courses.find((c) => c._id === courseId);
+          const courseToEdit = instructorCoursesData.courses.find(
+            (c) => c._id === courseId
+          );
 
           if (courseToEdit) {
             setFormData({
@@ -69,7 +78,10 @@ function InstructorCourseFormPage() {
               description: courseToEdit.description,
               imageUrl: courseToEdit.imageUrl,
               price: courseToEdit.price.toString(),
-              category: courseToEdit.category?._id || (categoryData.categories[0]?._id || ''),
+              category:
+                courseToEdit.category?._id ||
+                categoryData.categories[0]?._id ||
+                "",
               status: courseToEdit.status,
             });
           } else {
@@ -78,20 +90,22 @@ function InstructorCourseFormPage() {
         } else {
           // New course - set default category
           if (categoryData.categories.length > 0) {
-            setFormData(prev => ({
+            setFormData((prev) => ({
               ...prev,
-              category: prev.category || categoryData.categories[0]._id
+              category: prev.category || categoryData.categories[0]._id,
             }));
           }
         }
       } catch (err) {
-        console.error('Error fetching form data:', err);
-        setError(err.message || 'Failed to load form data.');
-        dispatch(showModal({
-          title: 'Error',
-          message: err.message || 'Failed to load form data.',
-          type: 'error',
-        }));
+        console.error("Error fetching form data:", err);
+        setError(err.message || "Failed to load form data.");
+        dispatch(
+          showModal({
+            title: "Error",
+            message: err.message || "Failed to load form data.",
+            type: "error",
+          })
+        );
       } finally {
         setLoading(false);
       }
@@ -102,9 +116,9 @@ function InstructorCourseFormPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    console.log('Input changed:', name, value);
+    console.log("Input changed:", name, value);
 
-    if (name === 'price') {
+    if (name === "price") {
       if (/^\d*\.?\d*$/.test(value)) {
         setFormData((prev) => ({ ...prev, [name]: value }));
       }
@@ -116,47 +130,65 @@ function InstructorCourseFormPage() {
   // Handle file selection
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
-    console.log('File selected:', file);
+    console.log("File selected:", file);
 
     if (file) {
       // Validate file type
-      const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
+      const allowedTypes = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "image/gif",
+        "image/webp",
+      ];
       if (!allowedTypes.includes(file.type)) {
-        console.error('Invalid file type:', file.type);
-        dispatch(showModal({
-          title: 'Invalid File Type',
-          message: 'Please select a valid image file (JPEG, PNG, GIF, or WebP).',
-          type: 'error',
-        }));
+        console.error("Invalid file type:", file.type);
+        dispatch(
+          showModal({
+            title: "Invalid File Type",
+            message:
+              "Please select a valid image file (JPEG, PNG, GIF, or WebP).",
+            type: "error",
+          })
+        );
         return;
       }
 
       // Validate file size (10MB limit)
       if (file.size > 10 * 1024 * 1024) {
-        console.error('File too large:', file.size);
-        dispatch(showModal({
-          title: 'File Too Large',
-          message: 'Please select an image smaller than 10MB.',
-          type: 'error',
-        }));
+        console.error("File too large:", file.size);
+        dispatch(
+          showModal({
+            title: "File Too Large",
+            message: "Please select an image smaller than 10MB.",
+            type: "error",
+          })
+        );
         return;
       }
 
-      console.log('File validation passed. Setting selected file:', file.name, 'Size:', file.size, 'Type:', file.type);
+      console.log(
+        "File validation passed. Setting selected file:",
+        file.name,
+        "Size:",
+        file.size,
+        "Type:",
+        file.type
+      );
       setSelectedFile(file);
 
       // Create preview URL
       const reader = new FileReader();
       reader.onload = (e) => {
-        console.log('Preview URL created successfully');
+        console.log("Preview URL created successfully");
         setPreviewUrl(e.target.result);
       };
       reader.onerror = (e) => {
-        console.error('FileReader error:', e);
+        console.error("FileReader error:", e);
       };
       reader.readAsDataURL(file);
     } else {
-      console.log('No file selected');
+      console.log("No file selected");
     }
   };
 
@@ -165,7 +197,7 @@ function InstructorCourseFormPage() {
     setSelectedFile(null);
     setPreviewUrl(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = '';
+      fileInputRef.current.value = "";
     }
   };
 
@@ -176,23 +208,23 @@ function InstructorCourseFormPage() {
 
     // Validation
     if (!formData.title || formData.title.length < 5) {
-      setError('Title must be at least 5 characters long.');
+      setError("Title must be at least 5 characters long.");
       setSubmitting(false);
       return;
     }
     if (!formData.description || formData.description.length < 20) {
-      setError('Description must be at least 20 characters long.');
+      setError("Description must be at least 20 characters long.");
       setSubmitting(false);
       return;
     }
     if (!formData.category) {
-      setError('Please select a category.');
+      setError("Please select a category.");
       setSubmitting(false);
       return;
     }
     const price = Number(formData.price) || 0;
     if (price < 0) {
-      setError('Price must be a non-negative number.');
+      setError("Price must be a non-negative number.");
       setSubmitting(false);
       return;
     }
@@ -204,25 +236,28 @@ function InstructorCourseFormPage() {
         // For updates, use FormData if there's a new file, otherwise use JSON
         if (selectedFile) {
           const formDataToSubmit = new FormData();
-          formDataToSubmit.append('courseId', courseId);
-          formDataToSubmit.append('title', formData.title);
-          formDataToSubmit.append('description', formData.description);
-          formDataToSubmit.append('price', price);
-          formDataToSubmit.append('category', formData.category);
-          formDataToSubmit.append('status', formData.status);
-          formDataToSubmit.append('courseImage', selectedFile);
+          formDataToSubmit.append("courseId", courseId);
+          formDataToSubmit.append("title", formData.title);
+          formDataToSubmit.append("description", formData.description);
+          formDataToSubmit.append("price", price);
+          formDataToSubmit.append("category", formData.category);
+          formDataToSubmit.append("status", formData.status);
+          formDataToSubmit.append("courseImage", selectedFile);
 
-          response = await fetch(`http://localhost:3000/api/instructor/course`, {
-            method: 'PUT',
-            headers: {
-              'Authorization': `Bearer ${token}`,
-            },
-            body: formDataToSubmit,
-          });
+          response = await fetch(
+            `https://techora-1.onrender.com/api/instructor/course`,
+            {
+              method: "PUT",
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+              body: formDataToSubmit,
+            }
+          );
 
           if (!response.ok) {
             const errorData = await response.json();
-            throw new Error(errorData.message || 'Failed to update course');
+            throw new Error(errorData.message || "Failed to update course");
           }
 
           response = await response.json();
@@ -239,96 +274,116 @@ function InstructorCourseFormPage() {
           response = await updateInstructorCourse(courseId, dataToSubmit);
         }
 
-        dispatch(showModal({
-          title: 'Course Updated!',
-          message: `${formData.title} has been updated successfully.`,
-          type: 'success',
-        }));
+        dispatch(
+          showModal({
+            title: "Course Updated!",
+            message: `${formData.title} has been updated successfully.`,
+            type: "success",
+          })
+        );
       } else {
         // For creation, always use FormData
         const formDataToSubmit = new FormData();
-        formDataToSubmit.append('title', formData.title);
-        formDataToSubmit.append('description', formData.description);
-        formDataToSubmit.append('price', price);
-        formDataToSubmit.append('category', formData.category);
-        formDataToSubmit.append('status', formData.status);
+        formDataToSubmit.append("title", formData.title);
+        formDataToSubmit.append("description", formData.description);
+        formDataToSubmit.append("price", price);
+        formDataToSubmit.append("category", formData.category);
+        formDataToSubmit.append("status", formData.status);
 
         if (selectedFile) {
-          console.log('Appending course image to FormData:', selectedFile.name);
-          formDataToSubmit.append('courseImage', selectedFile);
+          console.log("Appending course image to FormData:", selectedFile.name);
+          formDataToSubmit.append("courseImage", selectedFile);
         } else {
-          console.log('No course image selected');
+          console.log("No course image selected");
         }
 
         // Debug FormData contents
-        console.log('FormData contents:');
+        console.log("FormData contents:");
         for (let [key, value] of formDataToSubmit.entries()) {
           console.log(key, value);
         }
 
-        console.log('Sending POST request to create course...');
+        console.log("Sending POST request to create course...");
         response = await fetch(`http://localhost:3000/api/instructor/course`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Authorization': `Bearer ${token}`,
+            Authorization: `Bearer ${token}`,
           },
           body: formDataToSubmit,
         });
 
         if (!response.ok) {
           const errorData = await response.json();
-          throw new Error(errorData.message || 'Failed to create course');
+          throw new Error(errorData.message || "Failed to create course");
         }
 
         response = await response.json();
 
-        dispatch(showModal({
-          title: 'Course Created!',
-          message: `${formData.title} has been created successfully.`,
-          type: 'success',
-        }));
+        dispatch(
+          showModal({
+            title: "Course Created!",
+            message: `${formData.title} has been created successfully.`,
+            type: "success",
+          })
+        );
       }
       navigate(PROTECTED_ROUTES.instructor, { replace: true });
     } catch (err) {
-      console.error('Submission error:', err);
-      setError(err.message || 'Failed to save course.');
-      dispatch(showModal({
-        title: 'Submission Failed',
-        message: err.message || 'Could not save course.',
-        type: 'error',
-      }));
+      console.error("Submission error:", err);
+      setError(err.message || "Failed to save course.");
+      dispatch(
+        showModal({
+          title: "Submission Failed",
+          message: err.message || "Could not save course.",
+          type: "error",
+        })
+      );
     } finally {
       setSubmitting(false);
     }
   };
 
   if (authLoading || loading) return <Loader />;
-  if (error && !courseId) return <div className="text-[#DC2626] text-center p-8 text-xl font-medium">{error}</div>;
+  if (error && !courseId)
+    return (
+      <div className="text-[#DC2626] text-center p-8 text-xl font-medium">
+        {error}
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-[#FFFFFF] py-8 px-4 font-sans">
       <div className="container mx-auto max-w-3xl">
-
         <header className="relative mb-10">
           <h1 className="text-3xl font-bold text-[#1B3C53] text-center tracking-tight">
-            {isEditMode ? 'Edit Course' : 'Create New Course'}
+            {isEditMode ? "Edit Course" : "Create New Course"}
           </h1>
           <p className="text-[#6B7280] text-center mt-2 max-w-lg mx-auto">
-            {isEditMode ? 'Update your course details to keep it engaging.' : 'Craft a new course to share your expertise.'}
+            {isEditMode
+              ? "Update your course details to keep it engaging."
+              : "Craft a new course to share your expertise."}
           </p>
           <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-20 h-1 bg-[#4A8292] rounded-full"></div>
         </header>
 
-
         {error && (
           <div className="mb-6 p-4 bg-[#FFF1F2] border-l-4 border-[#DC2626] text-[#DC2626] rounded-md flex items-center">
-            <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+            <svg
+              className="w-5 h-5 mr-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
             </svg>
             <p className="text-sm font-medium">{error}</p>
           </div>
         )}
-
 
         <form onSubmit={handleSubmit} className="space-y-8">
           <fieldset className="bg-[#F9FAFB] p-6 rounded-xl border border-[#E5E7EB] shadow-sm">
@@ -337,7 +392,10 @@ function InstructorCourseFormPage() {
             </legend>
             <div className="space-y-6">
               <div className="relative">
-                <label htmlFor="title" className="block text-[#1B3C53] text-sm font-medium mb-2">
+                <label
+                  htmlFor="title"
+                  className="block text-[#1B3C53] text-sm font-medium mb-2"
+                >
                   Title
                 </label>
                 <div className="relative">
@@ -370,7 +428,10 @@ function InstructorCourseFormPage() {
               </div>
 
               <div className="relative">
-                <label htmlFor="description" className="block text-[#1B3C53] text-sm font-medium mb-2">
+                <label
+                  htmlFor="description"
+                  className="block text-[#1B3C53] text-sm font-medium mb-2"
+                >
                   Description
                 </label>
                 <div className="relative">
@@ -413,19 +474,33 @@ function InstructorCourseFormPage() {
                   <div className="w-full h-48 border-2 border-dashed border-[#E5E7EB] rounded-lg overflow-hidden bg-[#F9FAFB] flex items-center justify-center">
                     {previewUrl || (formData.imageUrl && !selectedFile) ? (
                       <img
-                        src={previewUrl || (formData.imageUrl?.startsWith('http')
-                          ? formData.imageUrl
-                          : `http://localhost:3000${formData.imageUrl}`
-                        )}
+                        src={
+                          previewUrl ||
+                          (formData.imageUrl?.startsWith("http")
+                            ? formData.imageUrl
+                            : `http://localhost:3000${formData.imageUrl}`)
+                        }
                         alt="Course preview"
                         className="w-full h-full object-cover"
                       />
                     ) : (
                       <div className="text-center">
-                        <svg className="mx-auto h-12 w-12 text-[#6B7280]" stroke="currentColor" fill="none" viewBox="0 0 48 48">
-                          <path d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        <svg
+                          className="mx-auto h-12 w-12 text-[#6B7280]"
+                          stroke="currentColor"
+                          fill="none"
+                          viewBox="0 0 48 48"
+                        >
+                          <path
+                            d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                            strokeWidth="2"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                          />
                         </svg>
-                        <p className="mt-2 text-sm text-[#6B7280]">No image selected</p>
+                        <p className="mt-2 text-sm text-[#6B7280]">
+                          No image selected
+                        </p>
                       </div>
                     )}
                   </div>
@@ -448,7 +523,7 @@ function InstructorCourseFormPage() {
                     disabled={submitting}
                     className="flex-1 bg-[#4A8292] text-white py-2 px-4 rounded-md hover:bg-[#1B3C53] disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 font-medium text-sm"
                   >
-                    {selectedFile ? 'Change Image' : 'Upload Image'}
+                    {selectedFile ? "Change Image" : "Upload Image"}
                   </button>
 
                   {(selectedFile || previewUrl) && (
@@ -465,7 +540,8 @@ function InstructorCourseFormPage() {
 
                 {selectedFile && (
                   <p className="mt-2 text-sm text-[#6B7280]">
-                    Selected: {selectedFile.name} ({(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                    Selected: {selectedFile.name} (
+                    {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
                   </p>
                 )}
 
@@ -483,7 +559,10 @@ function InstructorCourseFormPage() {
             </legend>
             <div className="space-y-6">
               <div className="relative">
-                <label htmlFor="price" className="block text-[#1B3C53] text-sm font-medium mb-2">
+                <label
+                  htmlFor="price"
+                  className="block text-[#1B3C53] text-sm font-medium mb-2"
+                >
                   Price (₹)
                 </label>
                 <div className="relative">
@@ -518,7 +597,10 @@ function InstructorCourseFormPage() {
               </div>
 
               <div className="relative">
-                <label htmlFor="category" className="block text-[#1B3C53] text-sm font-medium mb-2">
+                <label
+                  htmlFor="category"
+                  className="block text-[#1B3C53] text-sm font-medium mb-2"
+                >
                   Category
                 </label>
                 <div className="relative">
@@ -558,12 +640,22 @@ function InstructorCourseFormPage() {
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
                   </svg>
                 </div>
                 {categories.length === 0 && (
                   <p className="text-[#D97706] text-xs mt-2 flex items-center">
-                    <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg
+                      className="w-4 h-4 mr-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
                       <path
                         strokeLinecap="round"
                         strokeLinejoin="round"
@@ -584,7 +676,10 @@ function InstructorCourseFormPage() {
               Course Status
             </legend>
             <div className="relative">
-              <label htmlFor="status" className="block text-[#1B3C53] text-sm font-medium mb-2">
+              <label
+                htmlFor="status"
+                className="block text-[#1B3C53] text-sm font-medium mb-2"
+              >
                 Status
               </label>
               <div className="relative">
@@ -621,24 +716,50 @@ function InstructorCourseFormPage() {
                   stroke="currentColor"
                   viewBox="0 0 24 24"
                 >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M19 9l-7 7-7-7"
+                  />
                 </svg>
               </div>
             </div>
           </fieldset>
 
-
           <Button
-            text={submitting ? 'Saving...' : isEditMode ? 'Update Course' : 'Create Course'}
+            text={
+              submitting
+                ? "Saving..."
+                : isEditMode
+                ? "Update Course"
+                : "Create Course"
+            }
             onClick={handleSubmit}
             className="w-full px-6 py-3 bg-[#1B3C53] text-white hover:bg-[#456882] transition-all duration-200 ease-in-out transform hover:scale-105 rounded-md font-semibold text-base shadow-md"
             disabled={submitting || categories.length === 0}
-            aria-label={isEditMode ? 'Update course details' : 'Create new course'}
+            aria-label={
+              isEditMode ? "Update course details" : "Create new course"
+            }
           >
-            <svg className="w-5 h-5 mr-2 inline-block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+            <svg
+              className="w-5 h-5 mr-2 inline-block"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M5 13l4 4L19 7"
+              />
             </svg>
-            {submitting ? 'Saving...' : isEditMode ? 'Update Course' : 'Create Course'}
+            {submitting
+              ? "Saving..."
+              : isEditMode
+              ? "Update Course"
+              : "Create Course"}
           </Button>
         </form>
       </div>

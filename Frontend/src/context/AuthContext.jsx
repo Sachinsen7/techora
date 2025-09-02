@@ -1,40 +1,45 @@
-import Modal from '../components/common/Modal';
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { login as authServiceLogin, signup as authServiceSignup } from '../services/auth';
-
+import Modal from "../components/common/Modal";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import PropTypes from "prop-types";
+import {
+  login as authServiceLogin,
+  signup as authServiceSignup,
+} from "../services/auth";
 
 const AuthContext = createContext(null);
-
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
-    throw new Error('useAuth must be used within an AuthProvider');
+    throw new Error("useAuth must be used within an AuthProvider");
   }
   return context;
 };
 
 export const AuthProvider = ({ children }) => {
-  const [token, setToken] = useState(localStorage.getItem('token') || null);
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-
   const [modal, setModal] = useState({
     isOpen: false,
-    title: '',
-    message: '',
-    type: 'info',
-    onClose: null
+    title: "",
+    message: "",
+    type: "info",
+    onClose: null,
   });
 
-  
   const decodeToken = useCallback((jwtToken) => {
     if (!jwtToken) return null;
     try {
-      const base64Url = jwtToken.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const base64Url = jwtToken.split(".")[1];
+      const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
       const decodedPayload = JSON.parse(atob(base64));
       return decodedPayload;
     } catch (error) {
@@ -43,33 +48,35 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-  
   // Function to fetch complete user profile
   const fetchCompleteUserProfile = useCallback(async (token) => {
     try {
-      const response = await fetch('http://localhost:3000/api/user/profile', {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await fetch(
+        "https://techora-1.onrender.com/api/user/profile",
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       if (response.ok) {
         const data = await response.json();
-        console.log('AuthContext - Setting complete user data:', data.user);
+        console.log("AuthContext - Setting complete user data:", data.user);
         setUser(data.user);
         return data.user;
       }
     } catch (error) {
-      console.error('Failed to fetch complete user profile:', error);
+      console.error("Failed to fetch complete user profile:", error);
     }
     return null;
   }, []);
 
   useEffect(() => {
     const initializeAuth = async () => {
-      const storedToken = localStorage.getItem('token');
+      const storedToken = localStorage.getItem("token");
       if (storedToken) {
         const decodedUser = decodeToken(storedToken);
         if (decodedUser && decodedUser.id && decodedUser.role) {
@@ -79,19 +86,22 @@ export const AuthProvider = ({ children }) => {
           const basicUser = {
             userId: decodedUser.id,
             role: decodedUser.role,
-            firstName: decodedUser.firstName || 'User',
-            lastName: decodedUser.lastName || '',
-            email: decodedUser.email || '',
+            firstName: decodedUser.firstName || "User",
+            lastName: decodedUser.lastName || "",
+            email: decodedUser.email || "",
             profilePicture: decodedUser.profilePicture || null,
-            bio: decodedUser.bio || '',
+            bio: decodedUser.bio || "",
           };
-          console.log('AuthContext - Setting basic user data from token:', basicUser);
+          console.log(
+            "AuthContext - Setting basic user data from token:",
+            basicUser
+          );
           setUser(basicUser);
 
           // Then fetch complete profile data
           await fetchCompleteUserProfile(storedToken);
         } else {
-          localStorage.removeItem('token');
+          localStorage.removeItem("token");
           setToken(null);
           setUser(null);
         }
@@ -102,12 +112,14 @@ export const AuthProvider = ({ children }) => {
     initializeAuth();
   }, [decodeToken, fetchCompleteUserProfile]);
 
-  
   const login = useCallback(async (credentials) => {
     setLoading(true);
     try {
-      const data = await authServiceLogin(credentials.email, credentials.password);
-      localStorage.setItem('token', data.token);
+      const data = await authServiceLogin(
+        credentials.email,
+        credentials.password
+      );
+      localStorage.setItem("token", data.token);
       setToken(data.token);
       setUser({
         userId: data.userId,
@@ -116,26 +128,26 @@ export const AuthProvider = ({ children }) => {
         lastName: data.lastName,
         email: credentials.email,
         profilePicture: data.profilePicture || null,
-        bio: data.bio || ''
+        bio: data.bio || "",
       });
       setModal({
         isOpen: true,
-        title: 'Login Successful!',
+        title: "Login Successful!",
         message: `Welcome back, ${data.firstName || data.email}!`,
-        type: 'success',
-        onClose: () => setModal(prev => ({ ...prev, isOpen: false })),
+        type: "success",
+        onClose: () => setModal((prev) => ({ ...prev, isOpen: false })),
       });
       return data;
     } catch (error) {
       const errorMessage = error.response?.data?.details
-        ? error.response.data.details.map(err => err.message).join('; ')
+        ? error.response.data.details.map((err) => err.message).join("; ")
         : error.message;
       setModal({
         isOpen: true,
-        title: 'Login Failed',
-        message: errorMessage || 'Login failed. Please try again.',
-        type: 'error',
-        onClose: () => setModal(prev => ({ ...prev, isOpen: false })), 
+        title: "Login Failed",
+        message: errorMessage || "Login failed. Please try again.",
+        type: "error",
+        onClose: () => setModal((prev) => ({ ...prev, isOpen: false })),
       });
       throw error;
     } finally {
@@ -143,12 +155,17 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-
   const signup = useCallback(async (userData) => {
     setLoading(true);
     try {
-      const data = await authServiceSignup(userData.email, userData.password, userData.firstName, userData.lastName, userData.role);
-      localStorage.setItem('token', data.token);
+      const data = await authServiceSignup(
+        userData.email,
+        userData.password,
+        userData.firstName,
+        userData.lastName,
+        userData.role
+      );
+      localStorage.setItem("token", data.token);
       setToken(data.token);
       setUser({
         userId: data.userId,
@@ -157,14 +174,14 @@ export const AuthProvider = ({ children }) => {
         lastName: userData.lastName,
         email: userData.email,
         profilePicture: data.profilePicture || null,
-        bio: data.bio || ''
+        bio: data.bio || "",
       });
       setModal({
         isOpen: true,
         title: "Signup Successful!",
         message: "Your account has been created. Welcome!",
         type: "success",
-        onClose: () => setModal(prev => ({ ...prev, isOpen: false })) 
+        onClose: () => setModal((prev) => ({ ...prev, isOpen: false })),
       });
       return data;
     } catch (error) {
@@ -173,7 +190,7 @@ export const AuthProvider = ({ children }) => {
         title: "Signup Failed",
         message: error.message,
         type: "error",
-        onClose: () => setModal(prev => ({ ...prev, isOpen: false })) 
+        onClose: () => setModal((prev) => ({ ...prev, isOpen: false })),
       });
       throw error;
     } finally {
@@ -181,9 +198,8 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
-
   const logout = useCallback(() => {
-    localStorage.removeItem('token');
+    localStorage.removeItem("token");
     setToken(null);
     setUser(null);
     setModal({
@@ -191,63 +207,75 @@ export const AuthProvider = ({ children }) => {
       title: "Logged Out",
       message: "You have been successfully logged out.",
       type: "info",
-      onClose: () => setModal(prev => ({ ...prev, isOpen: false })) 
+      onClose: () => setModal((prev) => ({ ...prev, isOpen: false })),
     });
   }, []);
 
-  
   const showModal = useCallback((newModalProps) => {
     setModal({
       isOpen: false,
-      title: '',
-      message: '',
-      type: 'info',
+      title: "",
+      message: "",
+      type: "info",
       ...newModalProps,
-      onClose: () => setModal(prev => ({ ...prev, isOpen: false }))
+      onClose: () => setModal((prev) => ({ ...prev, isOpen: false })),
     });
   }, []);
 
   // Function to update user data in context
   const updateUser = useCallback((updatedUserData) => {
-    setUser(prev => ({
+    setUser((prev) => ({
       ...prev,
-      ...updatedUserData
+      ...updatedUserData,
     }));
   }, []);
 
   // OAuth login function (for use by AuthSuccess component)
   const oauthLogin = useCallback((userData, authToken) => {
-    localStorage.setItem('token', authToken);
+    localStorage.setItem("token", authToken);
     setToken(authToken);
     setUser(userData);
     setModal({
       isOpen: true,
-      title: 'Welcome!',
+      title: "Welcome!",
       message: `Successfully signed in with Google!`,
-      type: 'success',
-      onClose: () => setModal(prev => ({ ...prev, isOpen: false })),
+      type: "success",
+      onClose: () => setModal((prev) => ({ ...prev, isOpen: false })),
     });
   }, []);
 
-  const contextValue = React.useMemo(() => ({
-    token,
-    user,
-    isAuthenticated: !!token && !!user,
-    loading,
-    login,
-    oauthLogin,
-    signup,
-    logout,
-    showModal,
-    updateUser
-  }), [token, user, loading, login, oauthLogin, signup, logout, showModal, updateUser]);
+  const contextValue = React.useMemo(
+    () => ({
+      token,
+      user,
+      isAuthenticated: !!token && !!user,
+      loading,
+      login,
+      oauthLogin,
+      signup,
+      logout,
+      showModal,
+      updateUser,
+    }),
+    [
+      token,
+      user,
+      loading,
+      login,
+      oauthLogin,
+      signup,
+      logout,
+      showModal,
+      updateUser,
+    ]
+  );
 
   return (
     <AuthContext.Provider value={contextValue}>
       {children}
       <Modal
         isOpen={modal.isOpen}
-        onClose={modal.onClose} 
+        onClose={modal.onClose}
         title={modal.title}
         message={modal.message}
         type={modal.type}
@@ -257,5 +285,5 @@ export const AuthProvider = ({ children }) => {
 };
 
 AuthProvider.propTypes = {
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };

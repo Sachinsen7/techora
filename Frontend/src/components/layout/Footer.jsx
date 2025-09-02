@@ -49,7 +49,7 @@ function Footer() {
   ];
 
   const socialLinks = [
-    { name: "Twitter/X", icon: FiTwitter, url: "https://x.com/Techora" },
+    { name: "Twitter/X", icon: FiTwitter, url: "https://x.com/techora" },
     {
       name: "LinkedIn",
       icon: FiLinkedin,

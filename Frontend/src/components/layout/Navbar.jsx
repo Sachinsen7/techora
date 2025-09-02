@@ -67,7 +67,7 @@ function Navbar() {
       if (user.profilePicture.startsWith("http")) {
         return user.profilePicture;
       }
-      return `http://localhost:3000${user.profilePicture}`;
+      return `https://techora-1.onrender.com${user.profilePicture}`;
     }
     return `https://placehold.co/40x40/F9FAFB/1B3C53?text=${
       user?.firstName ? user.firstName[0].toUpperCase() : "U"

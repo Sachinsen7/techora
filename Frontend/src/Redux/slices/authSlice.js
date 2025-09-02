@@ -4,7 +4,6 @@ import {
   signup as authServiceSignup,
 } from "../../services/auth";
 
-// Async thunk for login
 export const loginUser = createAsyncThunk(
   "auth/loginUser",
   async (credentials, { rejectWithValue }) => {
@@ -13,7 +12,6 @@ export const loginUser = createAsyncThunk(
         credentials.email,
         credentials.password
       );
-      // Persist token immediately so interceptors work on next requests
       if (data?.token) {
         localStorage.setItem("token", data.token);
       }
@@ -22,7 +20,6 @@ export const loginUser = createAsyncThunk(
         user: {
           userId: data.userId,
           role: data.role,
-          // Backend signin response does not include names; fall back to profile fetch later
           firstName: data.firstName || "",
           lastName: data.lastName || "",
           email: credentials.email,
@@ -39,7 +36,6 @@ export const loginUser = createAsyncThunk(
   }
 );
 
-// Async thunk for signup
 export const signupUser = createAsyncThunk(
   "auth/signupUser",
   async (userData, { rejectWithValue }) => {
@@ -69,7 +65,6 @@ export const signupUser = createAsyncThunk(
   }
 );
 
-// Async thunk for fetching complete user profile
 export const fetchUserProfile = createAsyncThunk(
   "auth/fetchUserProfile",
   async (token, { rejectWithValue }) => {
@@ -97,7 +92,6 @@ export const fetchUserProfile = createAsyncThunk(
   }
 );
 
-// Helper function to decode JWT token
 const decodeToken = (token) => {
   if (!token) return null;
   try {
@@ -111,7 +105,6 @@ const decodeToken = (token) => {
   }
 };
 
-// Initial state
 const initialState = {
   token: localStorage.getItem("token") || null,
   user: null,
@@ -126,7 +119,6 @@ const initialState = {
   },
 };
 
-// Create the auth slice
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -239,7 +231,6 @@ const authSlice = createSlice({
           type: "error",
         };
       })
-      // Signup cases
       .addCase(signupUser.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -267,14 +258,12 @@ const authSlice = createSlice({
           type: "error",
         };
       })
-      // Fetch user profile cases
       .addCase(fetchUserProfile.fulfilled, (state, action) => {
         state.user = action.payload;
       });
   },
 });
 
-// Export actions
 export const {
   initializeAuth,
   logout,
@@ -285,7 +274,6 @@ export const {
   clearError,
 } = authSlice.actions;
 
-// Export selectors
 export const selectAuth = (state) => state.auth;
 export const selectUser = (state) => state.auth.user;
 export const selectToken = (state) => state.auth.token;
@@ -294,5 +282,4 @@ export const selectAuthLoading = (state) => state.auth.loading;
 export const selectAuthError = (state) => state.auth.error;
 export const selectAuthModal = (state) => state.auth.modal;
 
-// Export reducer
 export default authSlice.reducer;

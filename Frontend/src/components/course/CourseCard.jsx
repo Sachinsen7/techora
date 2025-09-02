@@ -46,7 +46,7 @@ function CourseCard({ course, className }) {
               course.imageUrl?.startsWith("http")
                 ? course.imageUrl
                 : course.imageUrl
-                ? `http://localhost:3000${course.imageUrl}`
+                ? `https://techora-1.onrender.com${course.imageUrl}`
                 : "https://via.placeholder.com/400x250/F9FAFB/1B3C53?text=Course+Image"
             }
             alt={course.title}
@@ -74,7 +74,7 @@ function CourseCard({ course, className }) {
               {course.category.name || course.category}
             </span>
           )}
-          {/* Wishlist Button */}
+
           <div className="absolute top-3 right-3">
             <WishlistButton
               courseId={course._id}
@@ -154,7 +154,6 @@ function CourseCard({ course, className }) {
             </p>
           )}
 
-          {/* Action Buttons */}
           <div className="flex items-center justify-between gap-2 pt-3 border-t border-gray-100">
             <AddToCartButton
               course={course}

@@ -1,13 +1,19 @@
-import React, { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import PropTypes from 'prop-types';
-import { useAuth } from './AuthContext';
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useEffect,
+  useCallback,
+} from "react";
+import PropTypes from "prop-types";
+import { useAuth } from "./AuthContext";
 
 const CartContext = createContext(null);
 
 export const useCart = () => {
   const context = useContext(CartContext);
   if (!context) {
-    throw new Error('useCart must be used within a CartProvider');
+    throw new Error("useCart must be used within a CartProvider");
   }
   return context;
 };
@@ -17,7 +23,6 @@ export const CartProvider = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Load cart from localStorage on mount
   useEffect(() => {
     if (isAuthenticated && user) {
       const savedCart = localStorage.getItem(`cart_${user.userId}`);
@@ -25,7 +30,7 @@ export const CartProvider = ({ children }) => {
         try {
           setCartItems(JSON.parse(savedCart));
         } catch (error) {
-          console.error('Error loading cart from localStorage:', error);
+          console.error("Error loading cart from localStorage:", error);
           setCartItems([]);
         }
       }
@@ -34,102 +39,106 @@ export const CartProvider = ({ children }) => {
     }
   }, [isAuthenticated, user]);
 
-  // Save cart to localStorage whenever it changes
   useEffect(() => {
     if (isAuthenticated && user) {
       localStorage.setItem(`cart_${user.userId}`, JSON.stringify(cartItems));
     }
   }, [cartItems, isAuthenticated, user]);
 
-  // Add item to cart
-  const addToCart = useCallback((course) => {
-    if (!isAuthenticated) {
+  const addToCart = useCallback(
+    (course) => {
+      if (!isAuthenticated) {
+        showModal({
+          isOpen: true,
+          title: "Login Required",
+          message: "Please log in to add courses to your cart.",
+          type: "info",
+        });
+        return false;
+      }
+
+      const existingItem = cartItems.find((item) => item._id === course._id);
+      if (existingItem) {
+        showModal({
+          isOpen: true,
+          title: "Already in Cart",
+          message: `"${course.title}" is already in your cart.`,
+          type: "info",
+        });
+        return false;
+      }
+
+      const cartItem = {
+        _id: course._id,
+        title: course.title,
+        description: course.description,
+        price: course.price,
+        imageUrl: course.imageUrl,
+        category: course.category,
+        level: course.level,
+        duration: course.duration,
+        creatorId: course.creatorId,
+        addedAt: new Date().toISOString(),
+      };
+
+      setCartItems((prev) => [...prev, cartItem]);
+
       showModal({
         isOpen: true,
-        title: 'Login Required',
-        message: 'Please log in to add courses to your cart.',
-        type: 'info',
+        title: "Added to Cart",
+        message: `"${course.title}" has been added to your cart.`,
+        type: "success",
       });
-      return false;
-    }
 
-    // Check if course is already in cart
-    const existingItem = cartItems.find(item => item._id === course._id);
-    if (existingItem) {
-      showModal({
-        isOpen: true,
-        title: 'Already in Cart',
-        message: `"${course.title}" is already in your cart.`,
-        type: 'info',
-      });
-      return false;
-    }
-
-    const cartItem = {
-      _id: course._id,
-      title: course.title,
-      description: course.description,
-      price: course.price,
-      imageUrl: course.imageUrl,
-      category: course.category,
-      level: course.level,
-      duration: course.duration,
-      creatorId: course.creatorId,
-      addedAt: new Date().toISOString(),
-    };
-
-    setCartItems(prev => [...prev, cartItem]);
-    
-    showModal({
-      isOpen: true,
-      title: 'Added to Cart',
-      message: `"${course.title}" has been added to your cart.`,
-      type: 'success',
-    });
-
-    return true;
-  }, [isAuthenticated, cartItems, showModal]);
-
-  // Remove item from cart
-  const removeFromCart = useCallback((courseId) => {
-    const item = cartItems.find(item => item._id === courseId);
-    if (item) {
-      setCartItems(prev => prev.filter(item => item._id !== courseId));
-      showModal({
-        isOpen: true,
-        title: 'Removed from Cart',
-        message: `"${item.title}" has been removed from your cart.`,
-        type: 'success',
-      });
       return true;
-    }
-    return false;
-  }, [cartItems, showModal]);
+    },
+    [isAuthenticated, cartItems, showModal]
+  );
 
-  // Clear entire cart
+  const removeFromCart = useCallback(
+    (courseId) => {
+      const item = cartItems.find((item) => item._id === courseId);
+      if (item) {
+        setCartItems((prev) => prev.filter((item) => item._id !== courseId));
+        showModal({
+          isOpen: true,
+          title: "Removed from Cart",
+          message: `"${item.title}" has been removed from your cart.`,
+          type: "success",
+        });
+        return true;
+      }
+      return false;
+    },
+    [cartItems, showModal]
+  );
+
   const clearCart = useCallback(() => {
     setCartItems([]);
     showModal({
       isOpen: true,
-      title: 'Cart Cleared',
-      message: 'All items have been removed from your cart.',
-      type: 'success',
+      title: "Cart Cleared",
+      message: "All items have been removed from your cart.",
+      type: "success",
     });
   }, [showModal]);
 
-  // Check if item is in cart
-  const isInCart = useCallback((courseId) => {
-    return cartItems.some(item => item._id === courseId);
-  }, [cartItems]);
+  const isInCart = useCallback(
+    (courseId) => {
+      return cartItems.some((item) => item._id === courseId);
+    },
+    [cartItems]
+  );
 
-  // Calculate totals
-  const cartTotal = cartItems.reduce((total, item) => total + (item.price || 0), 0);
+  const cartTotal = cartItems.reduce(
+    (total, item) => total + (item.price || 0),
+    0
+  );
   const cartCount = cartItems.length;
 
-  // Get cart summary
   const getCartSummary = useCallback(() => {
     const subtotal = cartTotal;
-    const tax = subtotal * 0.1; // 10% tax
+    const tax = subtotal * 0.1;
     const total = subtotal + tax;
 
     return {
@@ -141,14 +150,14 @@ export const CartProvider = ({ children }) => {
     };
   }, [cartTotal, cartCount, cartItems]);
 
-  // Move to checkout
   const proceedToCheckout = useCallback(() => {
     if (cartItems.length === 0) {
       showModal({
         isOpen: true,
-        title: 'Empty Cart',
-        message: 'Your cart is empty. Add some courses before proceeding to checkout.',
-        type: 'info',
+        title: "Empty Cart",
+        message:
+          "Your cart is empty. Add some courses before proceeding to checkout.",
+        type: "info",
       });
       return false;
     }
@@ -169,9 +178,7 @@ export const CartProvider = ({ children }) => {
   };
 
   return (
-    <CartContext.Provider value={contextValue}>
-      {children}
-    </CartContext.Provider>
+    <CartContext.Provider value={contextValue}>{children}</CartContext.Provider>
   );
 };
 

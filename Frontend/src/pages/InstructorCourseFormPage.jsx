@@ -38,7 +38,6 @@ function InstructorCourseFormPage() {
   const [error, setError] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
 
-  // Separate useEffect for auth check
   useEffect(() => {
     if (!authLoading && (!user || user.role !== "instructor")) {
       navigate(PROTECTED_ROUTES.dashboard, { replace: true });
@@ -52,7 +51,6 @@ function InstructorCourseFormPage() {
     }
   }, [authLoading, user, navigate, dispatch]);
 
-  // Separate useEffect for data fetching
   useEffect(() => {
     if (authLoading || !user || user.role !== "instructor") {
       return;
@@ -88,7 +86,6 @@ function InstructorCourseFormPage() {
             setError("Course not found or you don't own it.");
           }
         } else {
-          // New course - set default category
           if (categoryData.categories.length > 0) {
             setFormData((prev) => ({
               ...prev,
@@ -127,13 +124,11 @@ function InstructorCourseFormPage() {
     }
   };
 
-  // Handle file selection
   const handleFileSelect = (e) => {
     const file = e.target.files[0];
     console.log("File selected:", file);
 
     if (file) {
-      // Validate file type
       const allowedTypes = [
         "image/jpeg",
         "image/jpg",
@@ -154,7 +149,6 @@ function InstructorCourseFormPage() {
         return;
       }
 
-      // Validate file size (10MB limit)
       if (file.size > 10 * 1024 * 1024) {
         console.error("File too large:", file.size);
         dispatch(
@@ -177,7 +171,6 @@ function InstructorCourseFormPage() {
       );
       setSelectedFile(file);
 
-      // Create preview URL
       const reader = new FileReader();
       reader.onload = (e) => {
         console.log("Preview URL created successfully");
@@ -192,7 +185,6 @@ function InstructorCourseFormPage() {
     }
   };
 
-  // Remove selected file
   const removeSelectedFile = () => {
     setSelectedFile(null);
     setPreviewUrl(null);
@@ -233,7 +225,6 @@ function InstructorCourseFormPage() {
       let response;
 
       if (isEditMode) {
-        // For updates, use FormData if there's a new file, otherwise use JSON
         if (selectedFile) {
           const formDataToSubmit = new FormData();
           formDataToSubmit.append("courseId", courseId);
@@ -262,7 +253,6 @@ function InstructorCourseFormPage() {
 
           response = await response.json();
         } else {
-          // No new file, use regular JSON update
           const dataToSubmit = {
             courseId,
             title: formData.title,
@@ -304,13 +294,16 @@ function InstructorCourseFormPage() {
         }
 
         console.log("Sending POST request to create course...");
-        response = await fetch(`http://localhost:3000/api/instructor/course`, {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-          body: formDataToSubmit,
-        });
+        response = await fetch(
+          `https://techora-1.onrender.com/api/instructor/course`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+            body: formDataToSubmit,
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
@@ -463,13 +456,11 @@ function InstructorCourseFormPage() {
                 </div>
               </div>
 
-              {/* Course Image Upload */}
               <div className="relative">
                 <label className="block text-[#1B3C53] text-sm font-medium mb-2">
                   Course Image
                 </label>
 
-                {/* Image Preview */}
                 <div className="mb-4">
                   <div className="w-full h-48 border-2 border-dashed border-[#E5E7EB] rounded-lg overflow-hidden bg-[#F9FAFB] flex items-center justify-center">
                     {previewUrl || (formData.imageUrl && !selectedFile) ? (
@@ -478,7 +469,7 @@ function InstructorCourseFormPage() {
                           previewUrl ||
                           (formData.imageUrl?.startsWith("http")
                             ? formData.imageUrl
-                            : `http://localhost:3000${formData.imageUrl}`)
+                            : `https://techora-1.onrender.com${formData.imageUrl}`)
                         }
                         alt="Course preview"
                         className="w-full h-full object-cover"
@@ -506,7 +497,6 @@ function InstructorCourseFormPage() {
                   </div>
                 </div>
 
-                {/* File Input */}
                 <input
                   ref={fileInputRef}
                   type="file"
@@ -515,7 +505,6 @@ function InstructorCourseFormPage() {
                   className="hidden"
                 />
 
-                {/* Upload Buttons */}
                 <div className="flex space-x-3">
                   <button
                     type="button"
@@ -552,7 +541,6 @@ function InstructorCourseFormPage() {
             </div>
           </fieldset>
 
-          {/* Pricing and Category Fieldset */}
           <fieldset className="bg-[#F9FAFB] p-6 rounded-xl border border-[#E5E7EB] shadow-sm">
             <legend className="text-[#1B3C53] text-lg font-semibold px-2 -mt-8 bg-[#FFFFFF] w-fit mx-auto">
               Pricing & Category
@@ -670,7 +658,6 @@ function InstructorCourseFormPage() {
             </div>
           </fieldset>
 
-          {/* Status Fieldset */}
           <fieldset className="bg-[#F9FAFB] p-6 rounded-xl border border-[#E5E7EB] shadow-sm">
             <legend className="text-[#1B3C53] text-lg font-semibold px-2 -mt-8 bg-[#FFFFFF] w-fit mx-auto">
               Course Status

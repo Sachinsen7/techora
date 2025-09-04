@@ -885,7 +885,7 @@ function InstructorCourseContentPage() {
                         <Button
                           text="Edit"
                           onClick={() => handleEditSectionClick(section)}
-                          className="px-4 py-1 border border-[#E5E7EB] text-[#1B3C53] hover:bg-[#F9FAFB] rounded-md text-sm font-medium transition-all duration-200"
+                          className="px-4 py-1 border border-[#E5E7EB] text-[#F9FAFB]  rounded-md text-sm font-medium transition-all duration-200"
                           aria-label={`Edit ${section.title}`}
                         />
                         <Button
@@ -973,7 +973,7 @@ function InstructorCourseContentPage() {
                                   onClick={() =>
                                     handleEditLectureClick(lecture)
                                   }
-                                  className="px-3 py-1 border border-[#E5E7EB] text-[#1B3C53] hover:bg-[#F9FAFB] rounded-md text-xs font-medium transition-all duration-200"
+                                  className="px-3 py-1 border border-[#E5E7EB] text-[#F9FAFB] rounded-md text-xs font-medium transition-all duration-200"
                                   aria-label={`Edit ${lecture.title}`}
                                 />
                                 <Button
@@ -1023,498 +1023,14 @@ function InstructorCourseContentPage() {
           type="info"
           loading={submitting}
         >
-          <form
-            key="section-form"
-            onSubmit={handleSectionFormSubmit}
-            className="space-y-4"
-          >
-            {error && (
-              <p className="text-[#DC2626] text-sm text-center flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                {error}
-              </p>
-            )}
-            <div>
-              <label
-                htmlFor="sectionTitle"
-                className="block text-[#1B3C53] text-sm font-semibold mb-2"
-              >
-                Section Title
-              </label>
-              <div className="relative">
-                <input
-                  key="section-title-input"
-                  type="text"
-                  id="sectionTitle"
-                  name="title"
-                  value={sectionFormData.title || ""}
-                  onChange={handleSectionFormChange}
-                  placeholder="Enter section title..."
-                  className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
-                  required
-                  disabled={submitting}
-                  aria-describedby="sectionTitle-error"
-                  autoComplete="off"
-                  spellCheck="false"
-                />
-                <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="sectionOrder"
-                className="block text-[#1B3C53] text-sm font-semibold mb-2"
-              >
-                Order (Position)
-              </label>
-              <div className="relative">
-                <input
-                  key="section-order-input"
-                  type="number"
-                  id="sectionOrder"
-                  name="order"
-                  value={sectionFormData.order || ""}
-                  onChange={handleSectionFormChange}
-                  min="0"
-                  step="1"
-                  placeholder="0"
-                  className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
-                  required
-                  disabled={submitting}
-                  aria-describedby="sectionOrder-error"
-                  autoComplete="off"
-                  spellCheck="false"
-                />
-                <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
-                  />
-                </svg>
-              </div>
-            </div>
-            <Button
-              text={submitting ? "Saving..." : "Save Section"}
-              type="submit"
-              className="w-full px-6 py-2 bg-[#1B3C53] text-[#FFFFFF] hover:bg-[#456882] rounded-md font-semibold transition-all duration-200 transform hover:scale-105 shadow-md"
-              disabled={submitting}
-              aria-label="Save section"
+          <div className="max-h-[70vh] overflow-y-auto px-2">
+            <form
+              key="section-form"
+              onSubmit={handleSectionFormSubmit}
+              className="space-y-4"
             >
-              <svg
-                className="w-4 h-4 mr-2 inline-block"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              {submitting ? "Saving..." : "Save Section"}
-            </Button>
-          </form>
-        </Modal>
-
-        <Modal
-          key="lecture-form-modal"
-          isOpen={showLectureForm}
-          onClose={handleLectureModalClose}
-          title={currentLecture ? "Edit Lecture" : "Add New Lecture"}
-          type="info"
-          loading={submitting}
-        >
-          <form
-            key="lecture-form"
-            onSubmit={handleLectureFormSubmit}
-            className="space-y-4"
-          >
-            {error && (
-              <p className="text-[#DC2626] text-sm text-center flex items-center justify-center">
-                <svg
-                  className="w-4 h-4 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                {error}
-              </p>
-            )}
-            <div>
-              <label
-                htmlFor="lectureTitle"
-                className="block text-[#1B3C53] text-sm font-semibold mb-2"
-              >
-                Lecture Title
-              </label>
-              <div className="relative">
-                <input
-                  key="lecture-title-input"
-                  type="text"
-                  id="lectureTitle"
-                  name="title"
-                  value={lectureFormData.title || ""}
-                  onChange={handleLectureFormChange}
-                  placeholder="Enter lecture title..."
-                  className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
-                  required
-                  disabled={submitting}
-                  aria-describedby="lectureTitle-error"
-                  autoComplete="off"
-                  spellCheck="false"
-                />
-                <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
-                  />
-                </svg>
-              </div>
-            </div>
-            <div>
-              <label
-                htmlFor="lectureType"
-                className="block text-[#1B3C53] text-sm font-semibold mb-2"
-              >
-                Lecture Type
-              </label>
-              <div className="relative">
-                <select
-                  id="lectureType"
-                  name="type"
-                  value={lectureFormData.type}
-                  onChange={handleLectureFormChange}
-                  className="w-full pl-10 pr-8 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed appearance-none transition-all duration-200"
-                  required
-                  disabled={submitting || currentLecture}
-                  aria-describedby="lectureType-error"
-                >
-                  <option value="video">Video</option>
-                  <option value="text">Text</option>
-                  <option value="quiz">Quiz</option>
-                  <option value="assignment">Assignment</option>
-                </select>
-                <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-                <svg
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M19 9l-7 7-7-7"
-                  />
-                </svg>
-              </div>
-            </div>
-            {lectureFormData.type === "video" && (
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-[#1B3C53] text-sm font-semibold mb-2">
-                    Video Content
-                  </label>
-                  <div className="bg-[#F9FAFB] p-4 rounded-lg border border-[#E5E7EB]">
-                    <div className="flex items-center space-x-4 mb-4">
-                      <div className="flex-1">
-                        <label className="block text-[#374151] text-sm font-medium mb-2">
-                          Option 1: Upload Video File
-                        </label>
-                        <input
-                          type="file"
-                          accept="video/*"
-                          onChange={handleVideoFileSelect}
-                          disabled={submitting || isUploadingVideo}
-                          className="block w-full text-sm text-[#6B7280] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#4A8292] file:text-white hover:file:bg-[#1B3C53] file:cursor-pointer disabled:opacity-50"
-                        />
-                        {selectedVideoFile && (
-                          <p className="text-sm text-[#6B7280] mt-2">
-                            Selected: {selectedVideoFile.name} (
-                            {(selectedVideoFile.size / 1024 / 1024).toFixed(2)}{" "}
-                            MB)
-                          </p>
-                        )}
-                        {isUploadingVideo && (
-                          <div className="mt-2">
-                            <div className="bg-[#E5E7EB] rounded-full h-2">
-                              <div
-                                className="bg-[#4A8292] h-2 rounded-full transition-all duration-300"
-                                style={{ width: `${videoUploadProgress}%` }}
-                              ></div>
-                            </div>
-                            <p className="text-sm text-[#6B7280] mt-1">
-                              Uploading... {videoUploadProgress}%
-                            </p>
-                          </div>
-                        )}
-                        {uploadedVideoUrl && (
-                          <p className="text-sm text-[#059669] mt-2 flex items-center">
-                            <svg
-                              className="w-4 h-4 mr-1"
-                              fill="none"
-                              stroke="currentColor"
-                              viewBox="0 0 24 24"
-                            >
-                              <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M5 13l4 4L19 7"
-                              />
-                            </svg>
-                            Video uploaded successfully!
-                          </p>
-                        )}
-                      </div>
-                    </div>
-
-                    <div className="border-t border-[#E5E7EB] pt-4">
-                      <label
-                        htmlFor="contentUrl"
-                        className="block text-[#374151] text-sm font-medium mb-2"
-                      >
-                        Option 2: Video URL (YouTube, Vimeo, etc.)
-                      </label>
-                      <div className="relative">
-                        <input
-                          key="video-url-input"
-                          type="url"
-                          id="contentUrl"
-                          name="contentUrl"
-                          value={lectureFormData.contentUrl || ""}
-                          onChange={handleLectureFormChange}
-                          placeholder="e.g., https://youtube.com/embed/..."
-                          className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
-                          disabled={submitting || isUploadingVideo}
-                          autoComplete="off"
-                          spellCheck="false"
-                        />
-                        <svg
-                          className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="2"
-                            d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101"
-                          />
-                        </svg>
-                      </div>
-                    </div>
-                  </div>
-
-                  {(lectureFormData.contentUrl || uploadedVideoUrl) && (
-                    <div className="mt-4">
-                      <VideoPlayer
-                        src={
-                          uploadedVideoUrl
-                            ? `https://techora-1.onrender.com${uploadedVideoUrl}`
-                            : lectureFormData.contentUrl
-                        }
-                      />
-                      <p className="text-[#6B7280] text-sm mt-2">
-                        Video preview above.
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </div>
-            )}
-            {lectureFormData.type === "assignment" && (
-              <div>
-                <label
-                  htmlFor="contentUrl"
-                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
-                >
-                  Assignment File URL
-                </label>
-                <div className="relative">
-                  <input
-                    key="assignment-url-input"
-                    type="url"
-                    id="contentUrl"
-                    name="contentUrl"
-                    value={lectureFormData.contentUrl || ""}
-                    onChange={handleLectureFormChange}
-                    placeholder="e.g., https://drive.google.com/..."
-                    className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
-                    required
-                    disabled={submitting}
-                    aria-describedby="contentUrl-error"
-                    autoComplete="off"
-                    spellCheck="false"
-                  />
-                  <svg
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101"
-                    />
-                  </svg>
-                </div>
-              </div>
-            )}
-            {lectureFormData.type === "text" && (
-              <div>
-                <label
-                  htmlFor="textContent"
-                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
-                >
-                  Text Content
-                </label>
-                <div className="relative">
-                  <textarea
-                    key="text-content-input"
-                    id="textContent"
-                    name="textContent"
-                    rows="6"
-                    value={lectureFormData.textContent || ""}
-                    onChange={handleLectureFormChange}
-                    placeholder="Enter your lecture content here..."
-                    className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200 resize-vertical"
-                    required={lectureFormData.type === "text"}
-                    disabled={submitting}
-                    aria-describedby="textContent-error"
-                    autoComplete="off"
-                    spellCheck="false"
-                  />
-                  <svg
-                    className="absolute left-3 top-4 w-4 h-4 text-[#4A8292] pointer-events-none"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M3 4h13M3 8h13M3 12h6m-6 4h6"
-                    />
-                  </svg>
-                </div>
-              </div>
-            )}
-            {lectureFormData.type === "video" && (
-              <div>
-                <label
-                  htmlFor="duration"
-                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
-                >
-                  Duration (seconds)
-                </label>
-                <div className="relative">
-                  <input
-                    key="duration-input"
-                    type="number"
-                    id="duration"
-                    name="duration"
-                    value={lectureFormData.duration || ""}
-                    onChange={handleLectureFormChange}
-                    min="0"
-                    step="1"
-                    placeholder="Duration in seconds"
-                    className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
-                    required={lectureFormData.type === "video"}
-                    disabled={submitting}
-                    aria-describedby="duration-error"
-                    autoComplete="off"
-                    spellCheck="false"
-                  />
-                  <svg
-                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                </div>
-              </div>
-            )}
-            {lectureFormData.type === "quiz" && !currentLecture && (
-              <div className="bg-[#F0F9FF] p-4 rounded-lg border border-[#0EA5E9]">
-                <p className="text-[#0369A1] text-sm flex items-center mb-3">
+              {error && (
+                <p className="text-[#DC2626] text-sm text-center flex items-center justify-center">
                   <svg
                     className="w-4 h-4 mr-2"
                     fill="none"
@@ -1525,22 +1041,99 @@ function InstructorCourseContentPage() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth="2"
-                      d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                     />
                   </svg>
-                  After creating this quiz lecture, you can immediately create
-                  quiz questions.
+                  {error}
                 </p>
-                <p className="text-[#0369A1] text-xs">
-                  You'll be able to create quiz questions after saving this
-                  lecture.
-                </p>
+              )}
+              <div>
+                <label
+                  htmlFor="sectionTitle"
+                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                >
+                  Section Title
+                </label>
+                <div className="relative">
+                  <input
+                    key="section-title-input"
+                    type="text"
+                    id="sectionTitle"
+                    name="title"
+                    value={sectionFormData.title || ""}
+                    onChange={handleSectionFormChange}
+                    placeholder="Enter section title..."
+                    className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
+                    required
+                    disabled={submitting}
+                    aria-describedby="sectionTitle-error"
+                    autoComplete="off"
+                    spellCheck="false"
+                  />
+                  <svg
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    />
+                  </svg>
+                </div>
               </div>
-            )}
-            {lectureFormData.type === "assignment" && !currentLecture && (
-              <p className="text-[#D97706] text-sm flex items-center">
+              <div>
+                <label
+                  htmlFor="sectionOrder"
+                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                >
+                  Order (Position)
+                </label>
+                <div className="relative">
+                  <input
+                    key="section-order-input"
+                    type="number"
+                    id="sectionOrder"
+                    name="order"
+                    value={sectionFormData.order || ""}
+                    onChange={handleSectionFormChange}
+                    min="0"
+                    step="1"
+                    placeholder="0"
+                    className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
+                    required
+                    disabled={submitting}
+                    aria-describedby="sectionOrder-error"
+                    autoComplete="off"
+                    spellCheck="false"
+                  />
+                  <svg
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <Button
+                text={submitting ? "Saving..." : "Save Section"}
+                type="submit"
+                className="w-full px-6 py-2 bg-[#1B3C53] text-[#FFFFFF] hover:bg-[#456882] rounded-md font-semibold transition-all duration-200 transform hover:scale-105 shadow-md"
+                disabled={submitting}
+                aria-label="Save section"
+              >
                 <svg
-                  className="w-4 h-4 mr-2"
+                  className="w-4 h-4 mr-2 inline-block"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1549,90 +1142,538 @@ function InstructorCourseContentPage() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    d="M5 13l4 4L19 7"
                   />
                 </svg>
-                Note: After creating this assignment lecture, go to the Course
-                Learning page to define assignment details.
-              </p>
-            )}
-            {currentLecture && lectureFormData.type === "quiz" && (
-              <div className="mt-4">
-                {currentLecture.quizId ? (
+                {submitting ? "Saving..." : "Save Section"}
+              </Button>
+            </form>
+          </div>
+        </Modal>
+
+        <Modal
+          key="lecture-form-modal"
+          isOpen={showLectureForm}
+          onClose={handleLectureModalClose}
+          title={currentLecture ? "Edit Lecture" : "Add New Lecture"}
+          type="info"
+          loading={submitting}
+        >
+          <div className="max-h-[70vh] overflow-y-auto px-2">
+            <form
+              key="lecture-form"
+              onSubmit={handleLectureFormSubmit}
+              className="space-y-4"
+            >
+              {error && (
+                <p className="text-[#DC2626] text-sm text-center flex items-center justify-center">
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  {error}
+                </p>
+              )}
+              <div>
+                <label
+                  htmlFor="lectureTitle"
+                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                >
+                  Lecture Title
+                </label>
+                <div className="relative">
+                  <input
+                    key="lecture-title-input"
+                    type="text"
+                    id="lectureTitle"
+                    name="title"
+                    value={lectureFormData.title || ""}
+                    onChange={handleLectureFormChange}
+                    placeholder="Enter lecture title..."
+                    className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
+                    required
+                    disabled={submitting}
+                    aria-describedby="lectureTitle-error"
+                    autoComplete="off"
+                    spellCheck="false"
+                  />
+                  <svg
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                    />
+                  </svg>
+                </div>
+              </div>
+              <div>
+                <label
+                  htmlFor="lectureType"
+                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                >
+                  Lecture Type
+                </label>
+                <div className="relative">
+                  <select
+                    id="lectureType"
+                    name="type"
+                    value={lectureFormData.type}
+                    onChange={handleLectureFormChange}
+                    className="w-full pl-10 pr-8 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed appearance-none transition-all duration-200"
+                    required
+                    disabled={submitting || currentLecture}
+                    aria-describedby="lectureType-error"
+                  >
+                    <option value="video">Video</option>
+                    <option value="text">Text</option>
+                    <option value="quiz">Quiz</option>
+                    <option value="assignment">Assignment</option>
+                  </select>
+                  <svg
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"
+                    />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  <svg
+                    className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M19 9l-7 7-7-7"
+                    />
+                  </svg>
+                </div>
+              </div>
+              {lectureFormData.type === "video" && (
+                <div className="space-y-4">
                   <div>
+                    <label className="block text-[#1B3C53] text-sm font-semibold mb-2">
+                      Video Content
+                    </label>
+                    <div className="bg-[#F9FAFB] p-4 rounded-lg border border-[#E5E7EB]">
+                      <div className="flex items-center space-x-4 mb-4">
+                        <div className="flex-1">
+                          <label className="block text-[#374151] text-sm font-medium mb-2">
+                            Option 1: Upload Video File
+                          </label>
+                          <input
+                            type="file"
+                            accept="video/*"
+                            onChange={handleVideoFileSelect}
+                            disabled={submitting || isUploadingVideo}
+                            className="block w-full text-sm text-[#6B7280] file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-[#4A8292] file:text-white hover:file:bg-[#1B3C53] file:cursor-pointer disabled:opacity-50"
+                          />
+                          {selectedVideoFile && (
+                            <p className="text-sm text-[#6B7280] mt-2">
+                              Selected: {selectedVideoFile.name} (
+                              {(selectedVideoFile.size / 1024 / 1024).toFixed(
+                                2
+                              )}{" "}
+                              MB)
+                            </p>
+                          )}
+                          {isUploadingVideo && (
+                            <div className="mt-2">
+                              <div className="bg-[#E5E7EB] rounded-full h-2">
+                                <div
+                                  className="bg-[#4A8292] h-2 rounded-full transition-all duration-300"
+                                  style={{ width: `${videoUploadProgress}%` }}
+                                ></div>
+                              </div>
+                              <p className="text-sm text-[#6B7280] mt-1">
+                                Uploading... {videoUploadProgress}%
+                              </p>
+                            </div>
+                          )}
+                          {uploadedVideoUrl && (
+                            <p className="text-sm text-[#059669] mt-2 flex items-center">
+                              <svg
+                                className="w-4 h-4 mr-1"
+                                fill="none"
+                                stroke="currentColor"
+                                viewBox="0 0 24 24"
+                              >
+                                <path
+                                  strokeLinecap="round"
+                                  strokeLinejoin="round"
+                                  strokeWidth="2"
+                                  d="M5 13l4 4L19 7"
+                                />
+                              </svg>
+                              Video uploaded successfully!
+                            </p>
+                          )}
+                        </div>
+                      </div>
+
+                      <div className="border-t border-[#E5E7EB] pt-4">
+                        <label
+                          htmlFor="contentUrl"
+                          className="block text-[#374151] text-sm font-medium mb-2"
+                        >
+                          Option 2: Video URL (YouTube, Vimeo, etc.)
+                        </label>
+                        <div className="relative">
+                          <input
+                            key="video-url-input"
+                            type="url"
+                            id="contentUrl"
+                            name="contentUrl"
+                            value={lectureFormData.contentUrl || ""}
+                            onChange={handleLectureFormChange}
+                            placeholder="e.g., https://youtube.com/embed/..."
+                            className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
+                            disabled={submitting || isUploadingVideo}
+                            autoComplete="off"
+                            spellCheck="false"
+                          />
+                          <svg
+                            className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth="2"
+                              d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+
+                    {(lectureFormData.contentUrl || uploadedVideoUrl) && (
+                      <div className="mt-4">
+                        <VideoPlayer
+                          src={
+                            uploadedVideoUrl
+                              ? `https://techora-1.onrender.com${uploadedVideoUrl}`
+                              : lectureFormData.contentUrl
+                          }
+                        />
+                        <p className="text-[#6B7280] text-sm mt-2">
+                          Video preview above.
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
+              {lectureFormData.type === "assignment" && (
+                <div>
+                  <label
+                    htmlFor="contentUrl"
+                    className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                  >
+                    Assignment File URL
+                  </label>
+                  <div className="relative">
+                    <input
+                      key="assignment-url-input"
+                      type="url"
+                      id="contentUrl"
+                      name="contentUrl"
+                      value={lectureFormData.contentUrl || ""}
+                      onChange={handleLectureFormChange}
+                      placeholder="e.g., https://drive.google.com/..."
+                      className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
+                      required
+                      disabled={submitting}
+                      aria-describedby="contentUrl-error"
+                      autoComplete="off"
+                      spellCheck="false"
+                    />
+                    <svg
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.102 1.101"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+              {lectureFormData.type === "text" && (
+                <div>
+                  <label
+                    htmlFor="textContent"
+                    className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                  >
+                    Text Content
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      key="text-content-input"
+                      id="textContent"
+                      name="textContent"
+                      rows="6"
+                      value={lectureFormData.textContent || ""}
+                      onChange={handleLectureFormChange}
+                      placeholder="Enter your lecture content here..."
+                      className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200 resize-vertical"
+                      required={lectureFormData.type === "text"}
+                      disabled={submitting}
+                      aria-describedby="textContent-error"
+                      autoComplete="off"
+                      spellCheck="false"
+                    />
+                    <svg
+                      className="absolute left-3 top-4 w-4 h-4 text-[#4A8292] pointer-events-none"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M3 4h13M3 8h13M3 12h6m-6 4h6"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+              {lectureFormData.type === "video" && (
+                <div>
+                  <label
+                    htmlFor="duration"
+                    className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                  >
+                    Duration (seconds)
+                  </label>
+                  <div className="relative">
+                    <input
+                      key="duration-input"
+                      type="number"
+                      id="duration"
+                      name="duration"
+                      value={lectureFormData.duration || ""}
+                      onChange={handleLectureFormChange}
+                      min="0"
+                      step="1"
+                      placeholder="Duration in seconds"
+                      className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
+                      required={lectureFormData.type === "video"}
+                      disabled={submitting}
+                      aria-describedby="duration-error"
+                      autoComplete="off"
+                      spellCheck="false"
+                    />
+                    <svg
+                      className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                </div>
+              )}
+              {lectureFormData.type === "quiz" && !currentLecture && (
+                <div className="bg-[#F0F9FF] p-4 rounded-lg border border-[#0EA5E9]">
+                  <p className="text-[#0369A1] text-sm flex items-center mb-3">
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    After creating this quiz lecture, you can immediately create
+                    quiz questions.
+                  </p>
+                  <p className="text-[#0369A1] text-xs">
+                    You'll be able to create quiz questions after saving this
+                    lecture.
+                  </p>
+                </div>
+              )}
+              {lectureFormData.type === "assignment" && !currentLecture && (
+                <p className="text-[#D97706] text-sm flex items-center">
+                  <svg
+                    className="w-4 h-4 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                    />
+                  </svg>
+                  Note: After creating this assignment lecture, go to the Course
+                  Learning page to define assignment details.
+                </p>
+              )}
+              {currentLecture && lectureFormData.type === "quiz" && (
+                <div className="mt-4">
+                  {currentLecture.quizId ? (
+                    <div>
+                      <h4 className="text-base font-semibold text-[#1B3C53] mb-2">
+                        Quiz Preview
+                      </h4>
+                      <QuizComponent
+                        quizId={currentLecture.quizId}
+                        onQuizComplete={() => {}}
+                        showModal={showModal}
+                      />
+                    </div>
+                  ) : (
+                    <div className="bg-[#FEF3C7] p-4 rounded-lg border border-[#F59E0B]">
+                      <h4 className="text-base font-semibold text-[#92400E] mb-2">
+                        No Quiz Created Yet
+                      </h4>
+                      <p className="text-[#92400E] text-sm mb-3">
+                        This quiz lecture doesn't have any questions yet. Create
+                        a quiz to add questions.
+                      </p>
+                      <Button
+                        text="Create Quiz Questions"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          e.preventDefault();
+                          handleCreateQuizForLecture(currentLecture._id);
+                        }}
+                        className="px-4 py-2 bg-[#F59E0B] text-white hover:bg-[#D97706] rounded-md font-medium transition-all duration-200"
+                        disabled={submitting}
+                      />
+                    </div>
+                  )}
+                </div>
+              )}
+              {currentLecture &&
+                lectureFormData.type === "assignment" &&
+                currentLecture.assignmentSubmissionId && (
+                  <div className="mt-4">
                     <h4 className="text-base font-semibold text-[#1B3C53] mb-2">
-                      Quiz Preview
+                      Assignment Preview/Link
                     </h4>
-                    <QuizComponent
-                      quizId={currentLecture.quizId}
-                      onQuizComplete={() => {}}
+                    <AssignmentComponent
+                      lectureId={currentLecture._id}
+                      onAssignmentComplete={() => {}}
                       showModal={showModal}
                     />
                   </div>
-                ) : (
-                  <div className="bg-[#FEF3C7] p-4 rounded-lg border border-[#F59E0B]">
-                    <h4 className="text-base font-semibold text-[#92400E] mb-2">
-                      No Quiz Created Yet
-                    </h4>
-                    <p className="text-[#92400E] text-sm mb-3">
-                      This quiz lecture doesn't have any questions yet. Create a
-                      quiz to add questions.
-                    </p>
-                    <Button
-                      text="Create Quiz Questions"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.preventDefault();
-                        handleCreateQuizForLecture(currentLecture._id);
-                      }}
-                      className="px-4 py-2 bg-[#F59E0B] text-white hover:bg-[#D97706] rounded-md font-medium transition-all duration-200"
-                      disabled={submitting}
-                    />
-                  </div>
                 )}
-              </div>
-            )}
-            {currentLecture &&
-              lectureFormData.type === "assignment" &&
-              currentLecture.assignmentSubmissionId && (
-                <div className="mt-4">
-                  <h4 className="text-base font-semibold text-[#1B3C53] mb-2">
-                    Assignment Preview/Link
-                  </h4>
-                  <AssignmentComponent
-                    lectureId={currentLecture._id}
-                    onAssignmentComplete={() => {}}
-                    showModal={showModal}
+              <div>
+                <label
+                  htmlFor="lectureOrder"
+                  className="block text-[#1B3C53] text-sm font-semibold mb-2"
+                >
+                  Order (Position)
+                </label>
+                <div className="relative">
+                  <input
+                    key="lecture-order-input"
+                    type="number"
+                    id="lectureOrder"
+                    name="order"
+                    value={lectureFormData.order || ""}
+                    onChange={handleLectureFormChange}
+                    min="0"
+                    step="1"
+                    placeholder="0"
+                    className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
+                    required
+                    disabled={submitting}
+                    aria-describedby="lectureOrder-error"
+                    autoComplete="off"
+                    spellCheck="false"
                   />
+                  <svg
+                    className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                    />
+                  </svg>
                 </div>
-              )}
-            <div>
-              <label
-                htmlFor="lectureOrder"
-                className="block text-[#1B3C53] text-sm font-semibold mb-2"
+              </div>
+              <div>
+                <label className="flex items-center text-[#1B3C53] text-sm font-semibold">
+                  <input
+                    type="checkbox"
+                    name="isPublished"
+                    checked={lectureFormData.isPublished}
+                    onChange={handleLectureFormChange}
+                    className="mr-2 accent-[#4A8292] focus:ring-[#4A8292]"
+                    disabled={submitting}
+                    aria-label="Publish lecture"
+                  />
+                  Published (Visible to students)
+                </label>
+              </div>
+              <Button
+                text={submitting ? "Saving..." : "Save Lecture"}
+                type="submit"
+                className="w-full px-6 py-2 bg-[#1B3C53] text-[#FFFFFF] hover:bg-[#456882] rounded-md font-semibold transition-all duration-200 transform hover:scale-105 shadow-md"
+                disabled={submitting}
+                aria-label="Save lecture"
               >
-                Order (Position)
-              </label>
-              <div className="relative">
-                <input
-                  key="lecture-order-input"
-                  type="number"
-                  id="lectureOrder"
-                  name="order"
-                  value={lectureFormData.order || ""}
-                  onChange={handleLectureFormChange}
-                  min="0"
-                  step="1"
-                  placeholder="0"
-                  className="w-full pl-10 pr-4 py-2 border border-[#E5E7EB] rounded-md focus:outline-none focus:ring-2 focus:ring-[#4A8292] focus:border-[#4A8292] text-[#1B3C53] placeholder-[#9CA3AF] disabled:bg-[#E5E7EB] disabled:cursor-not-allowed transition-colors duration-200"
-                  required
-                  disabled={submitting}
-                  aria-describedby="lectureOrder-error"
-                  autoComplete="off"
-                  spellCheck="false"
-                />
                 <svg
-                  className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-[#4A8292] pointer-events-none"
+                  className="w-4 h-4 mr-2 inline-block"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -1641,48 +1682,13 @@ function InstructorCourseContentPage() {
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     strokeWidth="2"
-                    d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"
+                    d="M5 13l4 4L19 7"
                   />
                 </svg>
-              </div>
-            </div>
-            <div>
-              <label className="flex items-center text-[#1B3C53] text-sm font-semibold">
-                <input
-                  type="checkbox"
-                  name="isPublished"
-                  checked={lectureFormData.isPublished}
-                  onChange={handleLectureFormChange}
-                  className="mr-2 accent-[#4A8292] focus:ring-[#4A8292]"
-                  disabled={submitting}
-                  aria-label="Publish lecture"
-                />
-                Published (Visible to students)
-              </label>
-            </div>
-            <Button
-              text={submitting ? "Saving..." : "Save Lecture"}
-              type="submit"
-              className="w-full px-6 py-2 bg-[#1B3C53] text-[#FFFFFF] hover:bg-[#456882] rounded-md font-semibold transition-all duration-200 transform hover:scale-105 shadow-md"
-              disabled={submitting}
-              aria-label="Save lecture"
-            >
-              <svg
-                className="w-4 h-4 mr-2 inline-block"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-              {submitting ? "Saving..." : "Save Lecture"}
-            </Button>
-          </form>
+                {submitting ? "Saving..." : "Save Lecture"}
+              </Button>
+            </form>
+          </div>
         </Modal>
 
         <Modal
@@ -1745,24 +1751,28 @@ function InstructorCourseContentPage() {
           type="info"
           size="large"
         >
-          {currentQuizLecture ? (
-            <>
-              {console.log(
-                "Rendering QuizCreator for lecture:",
-                currentQuizLecture
-              )}
-              <QuizCreator
-                lectureId={currentQuizLecture}
-                courseId={courseId}
-                onQuizCreated={handleQuizCreated}
-              />
-            </>
-          ) : (
-            <>
-              {console.log(" No currentQuizLecture, not rendering QuizCreator")}
-              <div>No lecture selected</div>
-            </>
-          )}
+          <div className="max-h-[70vh] overflow-y-auto px-2">
+            {currentQuizLecture ? (
+              <>
+                {console.log(
+                  "Rendering QuizCreator for lecture:",
+                  currentQuizLecture
+                )}
+                <QuizCreator
+                  lectureId={currentQuizLecture}
+                  courseId={courseId}
+                  onQuizCreated={handleQuizCreated}
+                />
+              </>
+            ) : (
+              <>
+                {console.log(
+                  " No currentQuizLecture, not rendering QuizCreator"
+                )}
+                <div>No lecture selected</div>
+              </>
+            )}
+          </div>
         </Modal>
       </div>
     </div>

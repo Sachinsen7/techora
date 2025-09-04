@@ -542,44 +542,144 @@ function Navbar() {
         </div>
 
         {/* Mobile Menu */}
+        {/* Mobile Menu */}
         <AnimatePresence>
           {isMobileMenuOpen && (
-            <Dialog.Portal forceMount>
-              <Dialog.Overlay className="fixed inset-0 bg-black/40 z-40" />
+            <>
+              <motion.div
+                className="fixed inset-0 bg-black/40 z-40"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                onClick={() => setIsMobileMenuOpen(false)}
+              />
+              <motion.div
+                ref={mobileMenuRef}
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                transition={{ duration: 0.3 }}
+                className="fixed top-0 left-0 right-0 z-50 md:hidden border-t border-[#E5E7EB] bg-[#FFFFFF] overflow-y-auto rounded-b-xl"
+              >
+                <div className="px-4 py-4 space-y-3">
+                  {/* Navigation Links */}
+                  {navigationItems.map((item) => (
+                    <Link
+                      key={item.name}
+                      to={item.path}
+                      className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
+                        isActiveLink(item.path)
+                          ? "text-[#1B3C53] bg-[#F9FAFB]"
+                          : "text-[#6B7280] hover:text-[#4A8292] hover:bg-[#F9FAFB]"
+                      }`}
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item.name}
+                    </Link>
+                  ))}
 
-              <Dialog.Content asChild>
-                <motion.div
-                  ref={mobileMenuRef}
-                  initial={{ opacity: 0, y: -20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  transition={{ duration: 0.3 }}
-                  className="fixed top-0 left-0 right-0 z-50 md:hidden border-t border-[#E5E7EB] bg-[#FFFFFF] overflow-y-auto"
-                >
-                  <div className="px-4 py-4 space-y-3">
-                    {navigationItems.map((item) => (
+                  {/* Authenticated User Options */}
+                  {isAuthenticated ? (
+                    <div className="border-t border-[#E5E7EB] pt-4 space-y-3">
+                      {/* Profile */}
                       <Link
-                        key={item.name}
-                        to={item.path}
-                        className={`block px-3 py-2 rounded-md text-base font-medium transition-colors duration-200 ${
-                          isActiveLink(item.path)
-                            ? "text-[#1B3C53] bg-[#F9FAFB]"
-                            : "text-[#6B7280] hover:text-[#4A8292] hover:bg-[#F9FAFB]"
-                        }`}
+                        to={PROTECTED_ROUTES.profile}
                         onClick={() => setIsMobileMenuOpen(false)}
-                        aria-current={
-                          isActiveLink(item.path) ? "page" : undefined
-                        }
+                        className="flex items-center space-x-3"
                       >
-                        {item.name}
+                        <img
+                          src={getProfilePicture()}
+                          alt="Profile"
+                          className="w-10 h-10 rounded-full border-2 border-[#E5E7EB] object-cover"
+                        />
+                        <div>
+                          <p className="font-semibold text-[#1B3C53]">
+                            {user?.firstName || "User"} {user?.lastName || ""}
+                          </p>
+                          <p className="text-sm text-[#6B7280]">
+                            {user?.email || ""}
+                          </p>
+                        </div>
                       </Link>
-                    ))}
 
-                    {/* ... keep your SearchBar, ThemeToggle, Auth/Profile sections same ... */}
-                  </div>
-                </motion.div>
-              </Dialog.Content>
-            </Dialog.Portal>
+                      {/* Wishlist */}
+                      <Link
+                        to={PROTECTED_ROUTES.wishlist}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-md text-[#6B7280] hover:text-[#4A8292] hover:bg-[#F9FAFB]"
+                      >
+                        <span className="flex items-center">
+                          <WishlistIcon />
+                          <span className="ml-3">Wishlist</span>
+                        </span>
+                        {wishlistCount > 0 && (
+                          <span className="bg-[#4A8292] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            {wishlistCount}
+                          </span>
+                        )}
+                      </Link>
+
+                      {/* Cart */}
+                      <Link
+                        to={PROTECTED_ROUTES.cart}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        className="flex items-center justify-between px-3 py-2 rounded-md text-[#6B7280] hover:text-[#4A8292] hover:bg-[#F9FAFB]"
+                      >
+                        <span className="flex items-center">
+                          <CartIcon />
+                          <span className="ml-3">Cart</span>
+                        </span>
+                        {cartCount > 0 && (
+                          <span className="bg-[#4A8292] text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                            {cartCount}
+                          </span>
+                        )}
+                      </Link>
+
+                      {/* Logout */}
+                      <button
+                        onClick={() => {
+                          dispatch(logout());
+                          setIsMobileMenuOpen(false);
+                        }}
+                        className="flex items-center w-full px-3 py-2 text-[#6B7280] hover:bg-[#F9FAFB] hover:text-[#4A8292] rounded-md"
+                      >
+                        <svg
+                          className="w-5 h-5 mr-3 text-[#6B7280]"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"
+                          />
+                        </svg>
+                        <span>Sign Out</span>
+                      </button>
+                    </div>
+                  ) : (
+                    <div className="border-t border-[#E5E7EB] pt-4 space-y-2">
+                      <Link to={AUTH_ROUTES.login}>
+                        <Button
+                          variant="outline"
+                          text="Sign In"
+                          className="w-full px-4 py-2 border-[#1B3C53] text-[#1B3C53] hover:bg-[#1B3C53] hover:text-white rounded-full"
+                        />
+                      </Link>
+                      <Link to={AUTH_ROUTES.signup}>
+                        <Button
+                          text="Sign Up"
+                          className="w-full px-4 py-2 bg-[#1B3C53] text-white hover:bg-[#456882] rounded-full"
+                        />
+                      </Link>
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            </>
           )}
         </AnimatePresence>
       </div>

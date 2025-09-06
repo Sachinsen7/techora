@@ -12,14 +12,17 @@ passport.use(
       callbackURL:
         process.env.GOOGLE_CALLBACK_URL ||
         "https://techora-1.onrender.com/api/auth/google/callback",
+      passReqToCallback: true,
     },
-    async (accessToken, refreshToken, profile, done) => {
+    async (req, accessToken, refreshToken, profile, done) => {
       try {
         console.log("Google OAuth Profile:", {
           id: profile.id,
           email: profile.emails[0]?.value,
           name: profile.displayName,
         });
+
+        const role = req.query.role || "learner";
 
         let user = await UserModel.findOne({ googleId: profile.id });
 
@@ -52,7 +55,7 @@ passport.use(
             profile.displayName?.split(" ")[1] ||
             "",
           profilePicture: profile.photos[0]?.value,
-          role: "learner",
+          role,
           isEmailVerified: true,
         });
 

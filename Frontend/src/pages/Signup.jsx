@@ -76,8 +76,8 @@ function Signup() {
               type="text"
               id="firstName"
               name="firstName"
-              placeholder="John"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
+              placeholder="Enter your first name"
+              className="w-full px-4 py-2 border border-gray-300 text-primary-main rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
               value={formData.firstName}
               onChange={handleChange}
               required
@@ -95,8 +95,8 @@ function Signup() {
               type="text"
               id="lastName"
               name="lastName"
-              placeholder="Doe"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
+              placeholder="Enter your last name"
+              className="w-full px-4 py-2 border border-gray-300 text-primary-main rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
               value={formData.lastName}
               onChange={handleChange}
               required
@@ -115,7 +115,7 @@ function Signup() {
               id="email"
               name="email"
               placeholder="m@example.com"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
+              className="w-full px-4 py-2 border text-primary-main border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
               value={formData.email}
               onChange={handleChange}
               required
@@ -134,7 +134,7 @@ function Signup() {
               id="password"
               name="password"
               placeholder="••••••••"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
+              className="w-full px-4 py-2 border text-primary-main border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
               value={formData.password}
               onChange={handleChange}
               required
@@ -151,7 +151,7 @@ function Signup() {
             <select
               id="role"
               name="role"
-              className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
+              className="w-full px-4 py-2 border text-primary-main border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-light"
               value={formData.role}
               onChange={handleChange}
               disabled={loading}
@@ -174,7 +174,11 @@ function Signup() {
           <div className="flex-grow border-t border-gray-300"></div>
         </div>
 
-        <GoogleOAuthButton text="Sign up with Google" disabled={loading} />
+        <GoogleOAuthButton
+          text={`Sign up with Google as ${formData.role}`}
+          role={formData.role}
+          disabled={loading}
+        />
 
         <p className="text-center text-text-secondary text-sm mt-6">
           Already have an account?{" "}

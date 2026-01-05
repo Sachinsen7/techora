@@ -11,11 +11,6 @@ function About() {
       role: "Founder & CEO",
       bio: "Passionate about making quality education accessible to everyone.",
     },
-    {
-      name: "Kanchan Kahar",
-      role: "Head of Education",
-      bio: "Expert in curriculum design and creating engaging learning experiences.",
-    },
   ];
 
   const features = [

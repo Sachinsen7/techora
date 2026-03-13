@@ -4,9 +4,19 @@ const authMiddleware = require("../middleware/auth");
 const { uploadCourseImage, uploadVideo, handleUploadError, deleteOldCourseImage, deleteOldVideo } = require("../middleware/upload");
 const z = require("zod");
 const mongoose = require("mongoose");
+const rateLimit = require("express-rate-limit");
 
 const instructorRouter = Router();
 
+const instructorRateLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per window
+    standardHeaders: true,
+    legacyHeaders: false,
+});
+
+// Apply rate limiting to all instructor routes, including quiz deletion
+instructorRouter.use(instructorRateLimiter);
 
 const createCourseSchema = z.object({
     title: z.string().min(5, "Title must be at least 5 characters long").max(100, "Title cannot exceed 100 characters").trim(),
